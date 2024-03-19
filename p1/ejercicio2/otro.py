@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import random
 import time
+import copy
 
 
 #Definición de las Factorias
@@ -27,18 +28,33 @@ class FactoriaMontana(FactoriaCarreteraYBicicleta):
     def crear_bicicleta(self, num):
         return [BicicletaCarretera(i) for i in range(num)]
     
+
+class Prototype:
+    @abstractmethod
+    def clone(self):
+        pass
+
 #Definición de las Bicicletas
-class Bicicleta:
+class Bicicleta(ABC):
     def __init__(self, id=0):
         self.id = id
+
+    def clone(self):
+        return copy.deepcopy(self)
 
 class BicicletaCarretera(Bicicleta):
     def __init__(self, id):
         super().__init__(id)
 
+    def clone(self):
+        return copy.deepcopy(self)
+
 class BicicletaMontana(Bicicleta):
     def __init__(self, id):
         super().__init__(id)
+
+    def clone(self):
+        return copy.deepcopy(self)
 
 #Definición de las Carreras
 class Carrera():
