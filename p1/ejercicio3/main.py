@@ -4,10 +4,10 @@
 from abc import ABC, abstractmethod
 
 class Militar(ABC):
-    def __init__(self, nombre, rango, vida, ataque):
+    def __init__(self, nombre, rango, resistencia, ataque):
         self.nombre = nombre
         self.rango = rango
-        self.vida = vida
+        self.resistencia = resistencia
         self.ataque = ataque
 
     @abstractmethod
@@ -38,11 +38,12 @@ class Raso(Militar):
     def atacar(self):
         print(f"Yo, {self.nombre} voy a atacar.")
 
-        if(self.vida > self.ataque.atacar()):
-            self.vida -= self.ataque.atacar()
-            print(f"Me queda {self.vida}  vida.")
+        if(self.resistencia > self.ataque.danio()):
+            self.resistencia -= self.ataque.danio()
+            self.ataque.atacar()
+            print(f"Me queda {self.resistencia}  resistencia.")
         else:
-            print(f"No tengo vida suficiente para atacar")
+            print(f"No tengo resistencia suficiente para atacar")
 
     def set_ataque(self,ataque):
         self.ataque = ataque
@@ -54,7 +55,7 @@ class Raso(Militar):
         print("No se pueden quitar militares a un raso")
 
     def mostrar(self):
-        print(f"Nombre: {self.nombre}, Rango: {self.rango}, Vida: {self.vida}")
+        print(f"Nombre: {self.nombre}, Rango: {self.rango}, Resistencia: {self.resistencia}")
 
 class Oficial(Militar):
     def __init__(self, nombre, rango, ataque):
@@ -64,11 +65,12 @@ class Oficial(Militar):
     def atacar(self):
         print(f"Yo, {self.nombre} voy a atacar.")
         
-        if(self.vida > self.ataque.atacar()):
-            self.vida -= self.ataque.atacar()
-            print(f"Me queda {self.vida}  vida.")
+        if(self.resistencia > self.ataque.danio()):
+            self.resistencia -= self.ataque.danio()
+            self.ataque.atacar()
+            print(f"Me queda {self.resistencia}  resistencia.")
         else:
-            print(f"No tengo vida suficiente para atacar")
+            print(f"No tengo resistencia suficiente para atacar")
 
     def set_ataque(self,ataque):
         self.ataque = ataque
@@ -80,7 +82,7 @@ class Oficial(Militar):
         self.militares.remove(militar)
 
     def mostrar(self):
-        print(f"Nombre: {self.nombre}, Rango: {self.rango}, Vida: {self.vida}")
+        print(f"Nombre: {self.nombre}, Rango: {self.rango}, Resistencia: {self.resistencia}")
         for militar in self.militares:
             militar.mostrar()
 
@@ -89,19 +91,32 @@ class Ataque(ABC):
     def atacar(self):
         pass
 
+    @abstractmethod
+    def danio(self):
+        pass
+
 class AtaqueAereo(Ataque):
     def atacar(self):
         print("Ataque aereo")
+
+    def danio(self):
         return 10
+        
 
 class AtaqueTerrestre(Ataque):
     def atacar(self):
         print("Ataque terrestre")
+
+    def danio(self):
         return 5
+        
 
 class AtaqueMaritimo(Ataque):
     def atacar(self):
         print("Ataque maritimo")
+        
+
+    def danio(self):
         return 20
 
 
