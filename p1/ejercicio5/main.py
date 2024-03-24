@@ -1,8 +1,12 @@
 from abc import ABC, abstractmethod
+import time
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 import json
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
 #Estrategia Abstracta
 class ScrapingStrategy(ABC):
     @abstractmethod
@@ -30,6 +34,7 @@ class SeleniumScraping(ScrapingStrategy):
         # # self.driver = webdriver.Firefox(options=options)
         DRIVER_PATH = '/usr/bin/chromedriver'
         self.driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+        self.driver.maximize_window()
 
         
 
@@ -39,16 +44,15 @@ class SeleniumScraping(ScrapingStrategy):
             print("Iniciando el driver de Firefox")
             self.driver.get(url)
             #Gestionar las cookies
-            self.driver.implicitly_wait(5)
+            #self.driver.implicitly_wait(5)
 
-            # try:
-            #     # Scroll to the bottom of the page
-            #     self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-            #     xpath_elemento = f'//*[contains(text(), "Rechazar todo")]'
-            #     elemento = self.driver.find_element(By.XPATH, xpath_elemento)
-            #     elemento.click()
-            # except Exception as e:
-            #     print("No se ha encontrado el elemento: ", e)
+            ActionChains(self.driver).key_down(Keys.TAB).perform()
+            ActionChains(self.driver).key_down(Keys.TAB).perform()
+            ActionChains(self.driver).key_down(Keys.TAB).perform()
+            ActionChains(self.driver).key_down(Keys.TAB).perform()
+            ActionChains(self.driver).key_down(Keys.TAB).perform()
+            time.sleep(5)
+            ActionChains(self.driver).key_down(Keys.ENTER).perform()
 
             
             elemento = self.driver.find_element(By.XPATH, '//tbody').text
