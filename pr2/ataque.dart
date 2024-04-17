@@ -1,3 +1,5 @@
+import "militar.dart";
+
 abstract class Ataque{
   double danio = 0;
   double desgaste = 0;
@@ -11,21 +13,21 @@ abstract class Ataque{
 
 class AtaqueAereo extends Ataque{
   AtaqueAereo(){
-    danio=50;
+    danio=5;
     desgaste=10;
   }
 }
 
 class AtaqueTerrrestre extends Ataque{
   AtaqueTerrrestre(){
-    danio=10;
+    danio=1;
     desgaste=8;
   }
 }
 
 class AtaqueMaritimo extends Ataque{
   AtaqueMaritimo(){
-    danio=20;
+    danio=2;
     desgaste=20;
   }
 
