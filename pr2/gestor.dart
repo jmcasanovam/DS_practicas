@@ -12,8 +12,8 @@ class Gestor {
   bool fin = false;
 
   Gestor() {
-    jefe1 = Oficial("Equipo1", true, AtaqueAereo());
-    jefe2 = Oficial("Equipo2", true, AtaqueAereo());
+    jefe1 = Oficial("Equipo1");
+    jefe2 = Oficial("Equipo2");
   }
 
   void equipo1setAtaque() {
@@ -84,13 +84,13 @@ class Gestor {
     return registro;
   }
 
-  void aniadirJefe1(Militar m) {
-    jefe1.agregar(m);
-  }
+  // void aniadirJefe1(Militar m) {
+  //   jefe1.agregar(m);
+  // }
 
-  void aniadirJefe2(Militar m) {
-    jefe2.agregar(m);
-  }
+  // void aniadirJefe2(Militar m) {
+  //   jefe2.agregar(m);
+  // }
 
   List<Militar> getOficiales1(){
     return jefe1.getOficiales(); 
@@ -98,6 +98,14 @@ class Gestor {
 
   List<Militar> getOficiales2(){
     return jefe2.getOficiales(); 
+  }
+
+  Oficial getJefe1(){
+    return jefe1;
+  }
+
+  Oficial getJefe2(){
+    return jefe2;
   }
 
 }
