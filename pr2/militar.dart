@@ -1,5 +1,4 @@
 import 'ataque.dart';
-import 'dart:io';
 
 abstract class Militar {
   String nombre;
@@ -37,8 +36,8 @@ abstract class Militar {
 }
 
 class Raso extends Militar {
-  Raso(String nombre, bool oficial, Ataque ataque)
-      : super(nombre, oficial, 100.0, ataque);
+  Raso(String nombre)
+      : super(nombre, false, 100.0, AtaqueMaritimo());
 
   @override
   void agregar(Militar militar) {
@@ -78,8 +77,8 @@ class Raso extends Militar {
 class Oficial extends Militar {
   List<Militar> militares = [];
 
-  Oficial(String nombre, bool oficial, Ataque ataque)
-      : super(nombre, oficial, 150, ataque);
+  Oficial(String nombre)
+      : super(nombre, true, 150, AtaqueMaritimo());
 
   @override
   String atacar(Militar m) {
