@@ -1,60 +1,19 @@
-import 'dart:math';
 import 'ataque.dart';
-
-/* abstract class Ataque {
-  int danio();
-  void atacar();
-}
-
-class ArmaBlanca extends Ataque {
-  @override
-  int danio() {
-    return Random().nextInt(20) + 10; // Genera un valor aleatorio entre 10 y 29
-  }
-
-  @override
-  void atacar() {
-    print("Atacando con arma blanca!");
-  }
-}
-
-class ArmaFuego extends Ataque {
-  @override
-  int danio() {
-    return Random().nextInt(30) + 20; // Genera un valor aleatorio entre 20 y 49
-  }
-
-  @override
-  void atacar() {
-    print("Disparando arma de fuego!");
-  }
-} */
+import 'dart:io';
 
 abstract class Militar {
   String nombre;
-  String rango;
-  double resistencia, vida;
+  bool oficial;
+  double vida;
   Ataque ataque;
 
-  Militar(this.nombre, this.rango, this.vida, this.resistencia, this.ataque);
+  Militar(this.nombre, this.oficial, this.vida, this.ataque);
 
-  void atacar(Militar m) {
-
-    resistencia -= ataque.atacar(m);
-    
-    /* print("Yo, $nombre voy a atacar.");
-
-    if (resistencia > ataque.danio()) {
-      resistencia -= ataque.danio();
-      realizarAtaque();
-      print("Me queda $resistencia resistencia.");
-    } else {
-      print("No tengo resistencia suficiente para atacar");
-    } */
-
-
+  String atacar(Militar m) {
+    ataque.atacar(m);
+    String danioLog = "Militar $nombre realiza: ${ataque.danio}\n";
+    return danioLog;
   }
-
 
   void recibeAtaque(double danio);
 
@@ -64,47 +23,72 @@ abstract class Militar {
 
   void agregar(Militar militar);
 
-  void quitar(Militar militar);
+  int cantidadVivos();
 
-  
-  void totexto(){
-    print("vida:$vida resistencia: $resistencia \n");
+  //void quitar(Militar militar);
+
+  String imprimirJerarquia(int indent);
+
+  void totexto() {
+    print("vida:$vida  \n");
   }
+
+  List<Militar> getOficiales();
 }
 
 class Raso extends Militar {
-  Raso(String nombre, String rango, Ataque ataque)
-      : super(nombre, rango, 100.0, 100.0, ataque);
-
+  Raso(String nombre, bool oficial, Ataque ataque)
+      : super(nombre, oficial, 100.0, ataque);
 
   @override
   void agregar(Militar militar) {
     print("No se pueden agregar militares a un raso");
   }
 
+  //@override
+  //void quitar(Militar militar) {
+  //  print("No se pueden quitar militares a un raso");
+  //}
+
   @override
-  void quitar(Militar militar) {
-    print("No se pueden quitar militares a un raso");
+  void recibeAtaque(double danio) {
+    vida = vida - danio;
   }
 
   @override
-  void recibeAtaque(double danio){
-    vida = vida - danio;
+  String imprimirJerarquia(int indent) {
+    String salida = sumarIndentacion(indent) + nombre + "\n";
+    return salida;
+  }
+
+  @override
+  int cantidadVivos() {
+    if(vida>0){
+      return 1;
+    }
+    return 0;
+  }
+
+  @override
+  List<Militar> getOficiales() {
+    return [];
   }
 }
 
 class Oficial extends Militar {
   List<Militar> militares = [];
 
-  Oficial(String nombre, String rango, Ataque ataque)
-      : super(nombre, rango, 150, 150, ataque);
+  Oficial(String nombre, bool oficial, Ataque ataque)
+      : super(nombre, oficial, 150, ataque);
 
   @override
-  void atacar(Militar m){
-    for(Militar militar in militares){
-      militar.resistencia -= militar.ataque.atacar(m);
+  String atacar(Militar m) {
+    for (Militar militar in militares) {
+      militar.atacar(m);
     }
-    resistencia -= ataque.atacar(m);
+    ataque.atacar(m);
+    String danioLog = "Militar $nombre realiza: ${ataque.danio}\n";
+    return danioLog;
   }
 
   @override
@@ -113,31 +97,62 @@ class Oficial extends Militar {
   }
 
   @override
-  void quitar(Militar militar) {
-    militares.remove(militar);
+  void setAtaque(Ataque ataque) {
+    for (Militar m in militares) {
+      m.setAtaque(ataque);
+    }
   }
 
-    @override
-  void recibeAtaque(double danio){
-    vida = vida - danio*0.8;
-    for( Militar m in militares){
+  //@override
+  //void quitar(Militar militar) {
+  //  militares.remove(militar);
+  //}
+
+  @override
+  void recibeAtaque(double danio) {
+    vida = vida - danio * 0.8;
+    for (Militar m in militares) {
       m.recibeAtaque(danio);
     }
   }
+
+  @override
+  String imprimirJerarquia(int indent) {
+    String txt = "";
+    txt += "${sumarIndentacion(indent)} $nombre\n";
+    for (int i = 0; i < militares.length; i++) {
+      txt += militares[i].imprimirJerarquia(indent + 1);
+    }
+    return txt;
+  }
+
+  @override
+  int cantidadVivos() {
+    int vivos = 1;//por mi mismo
+    for (Militar m in militares) {
+      vivos += m.cantidadVivos();
+    }
+    return vivos;
+  }
+  
+  @override
+  List<Militar> getOficiales(){
+    List<Militar> oficiales = [this];
+    if(militares.isEmpty){
+      return oficiales;
+    }else{
+      for(Militar m in militares){
+        oficiales.addAll(m.getOficiales());
+      }
+    }
+    return oficiales;
+  }
 }
 
-void main() {
-  var raso = Raso("Soldado1", "Raso", AtaqueAereo());
-  var raso2 = Raso("Soldado2", "Raso", AtaqueAereo());
-  var oficial = Oficial("Oficial1", "Comandante", AtaqueMaritimo());
-  var oficial2 = Oficial("Oficial2", "Comandante", AtaqueMaritimo());
-
-  oficial.agregar(raso);
-  oficial2.agregar(raso2);
-  oficial2.atacar(oficial);
-  oficial.totexto();
-  raso.totexto();
-  oficial2.totexto();
-  raso2.totexto();
-
+String sumarIndentacion(int indent) {
+  String indentacion = "";
+  for (int i = 0; i < indent; i++) {
+    indentacion += "   ";
+  }
+  return indentacion;
 }
