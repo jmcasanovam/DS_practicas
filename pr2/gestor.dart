@@ -27,28 +27,25 @@ class Gestor {
   void equipo1ataca() {
     registro += jefe1.atacar(jefe2);
     equipo2vivos();
-    registro +="El equipo 1 ha atacado al equipo 2\n\tQuedan $e2vivos miembros del equipo 2 vivos";
+    registro +="-----El equipo 1 ha hecho un ${jefe1.ataque.totxt()} al equipo 2. Quedan $e2vivos militares en pie del equipo 2\n";
   }
 
   void equipo2ataca() {
     registro += jefe2.atacar(jefe1);
     equipo1vivos();
-    registro +="El equipo 2 ha atacado al equipo 1\n\tQuedan $e1vivos miembros del equipo 1 vivos";
+    registro +=">>>>>El equipo 2 ha hecho un ${jefe2.ataque.totxt()} al equipo 1. Quedan $e1vivos militares en pie del equipo 1\n";
   }
 
   Ataque devolverAtaqueRandom() {
     int r = Random().nextInt(3);
-    Ataque ata = AtaqueMaritimo();
-
-    switch (r) {
-      case 1:
-        ata = AtaqueAereo();
-      case 2:
-        ata = AtaqueTerrrestre();
-      default:
-        ata = AtaqueMaritimo();
+    
+    if (r == 0){
+      return AtaqueAereo();
+    } else if (r == 1){
+      return AtaqueMaritimo();
+    } else {
+      return AtaqueTerrrestre();
     }
-    return ata;
   }
 
   void equipo1vivos() {
@@ -79,15 +76,7 @@ class Gestor {
   String getRegistro() {
     return registro;
   }
-
-  // void aniadirJefe1(Militar m) {
-  //   jefe1.agregar(m);
-  // }
-
-  // void aniadirJefe2(Militar m) {
-  //   jefe2.agregar(m);
-  // }
-
+  
   List<Militar> getOficiales1(){
     return jefe1.getOficiales(); 
   }
