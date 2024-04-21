@@ -466,7 +466,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
   }
 
   void _imprimirJerarquia(int equipo) {
-    // String texto = 'oficial1.imprimirJerarquia';
     String texto = "";
     (equipo == 1)
         ? texto = gestorBatalla.getOficiales1()[0].imprimirJerarquia(0)
@@ -552,5 +551,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
     );
   }
 }
+
 
 
