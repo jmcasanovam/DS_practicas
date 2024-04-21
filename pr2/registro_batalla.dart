@@ -19,6 +19,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
   TextEditingController _superiorController = TextEditingController();
   String _rango = 'O';
   Future<Militar?>? _superiorSeleccionado;
+  bool mostrandoDialogo = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +29,14 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
     // listaMilitares.add(Militar('Maria', false));
 
     // gestorBatalla.aniadirJefe1( Oficial('Juan', true,AtaqueAereo()));
-    gestorBatalla.getOficiales1()[0].agregar(Oficial("nombre"));
-    gestorBatalla.getOficiales1()[1].agregar(Oficial("nombre2"));
+    gestorBatalla.getOficiales1()[0].agregar(Oficial("oficial1"));
+    gestorBatalla.getOficiales1()[1].agregar(Oficial("oficial2"));
+    gestorBatalla.getOficiales1()[0].agregar(Raso("raso1"));
+    gestorBatalla.getOficiales1()[1].agregar(Raso("raso2"));
+    gestorBatalla.getOficiales1()[2].agregar(Raso("raso3"));
+    gestorBatalla.getOficiales1()[2].agregar(Oficial("oficial3"));
+    gestorBatalla.getOficiales1()[3].agregar(Oficial("oficial4"));
+    gestorBatalla.getOficiales1()[2].agregar(Oficial("oficial5"));
 
     // gestorBatalla.aniadirJefe1(Oficial("Juan"));
     // gestorBatalla.aniadirJefe1(Oficial("Pedro"));
@@ -45,16 +52,20 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Row(children: [
+
+              // ],
+              // )
               Row(children: [
                 Expanded(
                   child: TextField(
                     controller: _nombreController,
                     decoration: const InputDecoration(
                         labelText: 'Nombre del militar',
-                        hintText: 'Don Quijote'),
+                        hintText: 'ej. Sargento Casanova'),
                   ),
                 ),
-                const SizedBox(width: 50),
+                const SizedBox(width: 50), //para dejar un espacio entre los campos
                 Expanded(
                   child: TextField(
                     controller: _superiorController,
@@ -65,7 +76,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                   ),
                 )
               ]),
-              const SizedBox(height: 30),
+              const SizedBox(height: 30), //espacio inferior de los campos de texto
               ListView(
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
@@ -116,7 +127,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Color.fromARGB(255, 36, 30, 206),
+                            backgroundColor: const Color.fromARGB(255, 36, 30, 206),
                           ),
                           child: const Text(
                               'Seleccionar un oficial de la lista de oficiales',
@@ -133,10 +144,10 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  // _imprimirJerarquia();
+                  _imprimirJerarquia(1);
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color.fromARGB(255, 193, 183, 1),
+                  backgroundColor: const Color.fromARGB(255, 193, 183, 1),
                 ),
                 child: const Text('Mostrar jeraquia',
                     style: TextStyle(
@@ -145,19 +156,24 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  _guardarMilitar(_nombreController.text,
-                      _rango == 'O'); // Guardar el militar
+                  if (_superiorController.text.isNotEmpty) {
+                    _guardarMilitar(_nombreController.text,
+                        _rango == 'O'); // Guardar el militar
+                  }
+                  
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color.fromARGB(255, 1, 193, 11),
+                  backgroundColor: const Color.fromARGB(255, 1, 193, 11),
                 ),
                 child: const Text('Añadir militar',
                     style: TextStyle(
                         height: 4, fontSize: 20, color: Colors.black)),
               ),
+              
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
+                  _batalla();
                   String log =
                       "Ha ganado el equipo: AB"; //Modificar: que imprima el resultado de la batalla
                   _imprimirResultadoBatalla(log);
@@ -173,42 +189,59 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
     );
   }
 
+  void _batalla(){
+    int i=0;
+    while(!gestorBatalla.partidaFinalizada()){
+      if(i%2==0){
+        gestorBatalla.equipo1setAtaque();
+        gestorBatalla.equipo1ataca();
+      }
+      else{
+        gestorBatalla.equipo2setAtaque();
+        gestorBatalla.equipo2ataca();
+      }
+      i++;
+    }
+  }
+
   void _guardarMilitar(String nombre, bool esOficial) {
     // Guardar el militar en la lista
-    setState(() {
-      _superiorSeleccionado!.then((value) {
-        if (value != null) {
-          if (esOficial) {
-            value.agregar(Oficial(nombre));
-          } else {
-            value.agregar(Raso(nombre));
+    if (nombre.isNotEmpty) {
+      setState(() {
+        _superiorSeleccionado!.then((value) {
+          if (value != null) {
+            if (esOficial) {
+              value.agregar(Oficial(nombre));
+            } else {
+              value.agregar(Raso(nombre));
+            }
           }
-        }
-      });
+        });
 
-      gestorBatalla.getOficiales1();
-      
-    });
-    _rango = 'O';
-    _nombreController.clear();
-    _superiorController.clear();
+        //gestorBatalla.getOficiales1();
+      });
+      _rango = 'O';
+      _nombreController.clear();
+      _superiorController.clear();
+    }
+    else {
+      print("esta vacio");
+    }
   }
 
   Future<Militar?> _mostrarOficiales() async {
     List<Militar> oficiales = gestorBatalla.getOficiales1();
-    // for (Militar militar in listaMilitares) {
-    //   if (militar.esOficial) {
-    //     oficiales.add(militar);
-    //   }
-    // }
 
+    for(Militar m in gestorBatalla.getOficiales1()){
+      print(m.nombre);
+    }
     // Mostrar la lista de oficiales
     final seleccionado = await showDialog<Militar?>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text(
-              'Esta es la lista de oficiales. Selecciona a que oficial quieres agregarlo:'),
+              'lista de oficiales. Selecciona a que oficial quieres agregarlo:'),
           content: Container(
             width: double.maxFinite,
             child: ListView.builder(
@@ -217,8 +250,8 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                 return ListTile(
                   title: Text(oficiales[index].nombre),
                   onTap: () {
-                    Navigator.of(context).pop(
-                        oficiales[index]); //Devolver el militar seleccionado
+                    Navigator.of(context).pop(oficiales[index]); //Devolver el militar seleccionado
+                   
                   },
                 );
               },
@@ -232,14 +265,18 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
     return seleccionado;
   }
 
-  void _imprimirJerarquia() {
-    String texto = 'oficial1.imprimirJerarquia';
+  void _imprimirJerarquia(int equipo) {
+    // String texto = 'oficial1.imprimirJerarquia';
+    String texto = "";
+    (equipo == 1)
+        ? texto = gestorBatalla.getOficiales1()[0].imprimirJerarquia(0)
+        : texto = gestorBatalla.getOficiales2()[0].imprimirJerarquia(0);
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Jerarquía de militares'),
+          title: Text('Jerarquía de militares del equipo $equipo'),
           content: Container(
             width: double.maxFinite,
             child: SingleChildScrollView(
