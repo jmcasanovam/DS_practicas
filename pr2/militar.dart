@@ -7,6 +7,8 @@ abstract class Militar {
   Ataque ataque;
 
   Militar(this.nombre, this.oficial, this.vida, this.ataque);
+  
+  
 
   String atacar(Militar m) {
     ataque.atacar(m);
@@ -28,9 +30,9 @@ abstract class Militar {
 
   String imprimirJerarquia(int indent);
 
-  void totexto() {
-    print("vida:$vida  \n");
-  }
+  // void totexto() {
+  //   print("vida:$vida  \n");
+  // }
 
   List<Militar> getOficiales();
 }
@@ -56,7 +58,7 @@ class Raso extends Militar {
 
   @override
   String imprimirJerarquia(int indent) {
-    String salida = sumarIndentacion(indent) + nombre + "\n";
+    String salida = "${sumarIndentacion(indent)}$nombre\n";
     return salida;
   }
 
@@ -102,11 +104,6 @@ class Oficial extends Militar {
     }
   }
 
-  //@override
-  //void quitar(Militar militar) {
-  //  militares.remove(militar);
-  //}
-
   @override
   void recibeAtaque(double danio) {
     vida = vida - danio * 0.8;
@@ -118,7 +115,7 @@ class Oficial extends Militar {
   @override
   String imprimirJerarquia(int indent) {
     String txt = "";
-    txt += "${sumarIndentacion(indent)} $nombre\n";
+    txt += "${sumarIndentacion(indent)}$nombre\n";
     for (int i = 0; i < militares.length; i++) {
       txt += militares[i].imprimirJerarquia(indent + 1);
     }
@@ -134,6 +131,7 @@ class Oficial extends Militar {
     return vivos;
   }
   
+  
   @override
   List<Militar> getOficiales(){
     List<Militar> oficiales = [this];
@@ -147,11 +145,11 @@ class Oficial extends Militar {
     return oficiales;
   }
 }
-
+//"+"|"+"
 String sumarIndentacion(int indent) {
   String indentacion = "";
   for (int i = 0; i < indent; i++) {
-    indentacion += "   ";
+    indentacion += "|      ";
   }
   return indentacion;
 }
