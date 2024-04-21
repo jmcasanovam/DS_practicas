@@ -12,8 +12,8 @@ class Gestor {
   bool fin = false;
 
   Gestor() {
-    jefe1 = Oficial("Equipo1");
-    jefe2 = Oficial("Equipo2");
+    jefe1 = Oficial("Capitan equipo1");
+    jefe2 = Oficial("Capitan equipo2");
   }
 
   void equipo1setAtaque() {
@@ -25,19 +25,15 @@ class Gestor {
   }
 
   void equipo1ataca() {
-    equipo1ataca();
-    jefe1.atacar(jefe2);
+    registro += jefe1.atacar(jefe2);
     equipo2vivos();
-    registro +=
-        "El equipo 1 ha atacado al equipo 2\n\tQuedan $e2vivos miembros del equipo 2 vivos";
+    registro +="El equipo 1 ha atacado al equipo 2\n\tQuedan $e2vivos miembros del equipo 2 vivos";
   }
 
   void equipo2ataca() {
-    equipo2ataca();
-    jefe2.atacar(jefe1);
+    registro += jefe2.atacar(jefe1);
     equipo1vivos();
-    registro +=
-        "El equipo 2 ha atacado al equipo 1\n\tQuedan $e1vivos miembros del equipo 1 vivos";
+    registro +="El equipo 2 ha atacado al equipo 1\n\tQuedan $e1vivos miembros del equipo 1 vivos";
   }
 
   Ataque devolverAtaqueRandom() {
