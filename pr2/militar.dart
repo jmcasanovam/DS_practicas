@@ -7,8 +7,6 @@ abstract class Militar {
   Ataque ataque;
 
   Militar(this.nombre, this.oficial, this.vida, this.ataque);
-  
-  
 
   String atacar(Militar m) {
     ataque.atacar(m);
@@ -26,13 +24,7 @@ abstract class Militar {
 
   int cantidadVivos();
 
-  //void quitar(Militar militar);
-
   String imprimirJerarquia(int indent);
-
-  // void totexto() {
-  //   print("vida:$vida  \n");
-  // }
 
   List<Militar> getOficiales();
 }
@@ -45,11 +37,6 @@ class Raso extends Militar {
   void agregar(Militar militar) {
     print("No se pueden agregar militares a un raso");
   }
-
-  //@override
-  //void quitar(Militar militar) {
-  //  print("No se pueden quitar militares a un raso");
-  //}
 
   @override
   void recibeAtaque(double danio) {
@@ -88,8 +75,7 @@ class Oficial extends Militar {
       militar.atacar(m);
     }
     ataque.atacar(m);
-    String danioLog = "Militar $nombre realiza: ${ataque.danio}\n";
-    return danioLog;
+    return "";
   }
 
   @override
@@ -99,6 +85,7 @@ class Oficial extends Militar {
 
   @override
   void setAtaque(Ataque ataque) {
+    this.ataque=ataque;
     for (Militar m in militares) {
       m.setAtaque(ataque);
     }
@@ -124,7 +111,8 @@ class Oficial extends Militar {
 
   @override
   int cantidadVivos() {
-    int vivos = 1;//por mi mismo
+    int vivos=0;
+    if(vida>0) vivos+=1;//por mi mismo
     for (Militar m in militares) {
       vivos += m.cantidadVivos();
     }
@@ -145,7 +133,7 @@ class Oficial extends Militar {
     return oficiales;
   }
 }
-//"+"|"+"
+
 String sumarIndentacion(int indent) {
   String indentacion = "";
   for (int i = 0; i < indent; i++) {
