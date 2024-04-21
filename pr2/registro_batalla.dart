@@ -26,28 +26,24 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
   // Seleccion de militares de cada equipo
   Future<Militar?>? _superiorSeleccionado;
   Future<Militar?>? _superiorSeleccionado2;
-
+  
   @override
   Widget build(BuildContext context) {
-    // Definicion de los militares por defecto para el equipo 1
-    gestorBatalla.getOficiales1()[0].agregar(Oficial("oficial1"));
-    gestorBatalla.getOficiales1()[1].agregar(Oficial("oficial2"));
-    gestorBatalla.getOficiales1()[0].agregar(Raso("raso1"));
-    gestorBatalla.getOficiales1()[1].agregar(Raso("raso2"));
-    gestorBatalla.getOficiales1()[2].agregar(Raso("raso3"));
-    gestorBatalla.getOficiales1()[2].agregar(Oficial("oficial3"));
-    gestorBatalla.getOficiales1()[3].agregar(Oficial("oficial4"));
-    gestorBatalla.getOficiales1()[2].agregar(Oficial("oficial5"));
-
-    // Definicion de los militares por defecto para el equipo 2
-    gestorBatalla.getOficiales2()[0].agregar(Oficial("oficial1"));
-    gestorBatalla.getOficiales2()[1].agregar(Oficial("oficial2"));
-    gestorBatalla.getOficiales2()[0].agregar(Raso("raso1"));
 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('** RESGISTRO DE BATALLA **'),
+          title: 
+          Container(
+            alignment: Alignment.center, // Alineación central
+            child: const Text(
+                  "[ CREACIÓN DE EQUIPOS ]",
+                  style: TextStyle(
+                    fontSize: 50, // Tamaño de la letra
+                    fontWeight: FontWeight.bold, // Negrita
+                  ),
+                ),
+            ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(25.0),
@@ -61,6 +57,16 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          Container(
+                            alignment: Alignment.center, // Alineación central
+                            child: const Text(
+                              "| EQUIPO 1 |",
+                              style: TextStyle(
+                                fontSize: 30, // Tamaño de la letra
+                                fontWeight: FontWeight.bold, // Negrita
+                              ),
+                            ),
+                          ),
                           Row(children: [
                             Expanded(
                               child: TextField(
@@ -172,7 +178,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                             onPressed: () {
                               if (_superiorController.text.isNotEmpty) {
                                 _guardarMilitar(_nombreController.text,
-                                    _rango == 'O'); // Guardar el militar
+                                    _rango == 'O', 1); // Guardar el militar
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -199,6 +205,16 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          Container(
+                            alignment: Alignment.center, // Alineación central
+                            child: const Text(
+                              "| EQUIPO 2 |",
+                              style: TextStyle(
+                                fontSize: 30, // Tamaño de la letra
+                                fontWeight: FontWeight.bold, // Negrita
+                              ),
+                            ),
+                          ),
                           Row(children: [
                             Expanded(
                               child: TextField(
@@ -309,7 +325,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                           ElevatedButton(
                             onPressed: () {
                               _guardarMilitar(_nombreController2.text,
-                                  _rango2 == 'O'); // Guardar el militar
+                                  _rango2 == 'O', 2); // Guardar el militar
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
@@ -329,7 +345,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
               ),
               
               //////////// BOTON BATALLA ////////////
-              
               ElevatedButton(
                 onPressed: () {
                   _batalla();
@@ -356,15 +371,10 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
     int i=0;
     while(!gestorBatalla.partidaFinalizada()){
       if(i%2==0){
-      //   print("equipo 1 ataca");
-      //   print("quedan ${gestorBatalla.e2vivos} vivos del equipo 2");
-      //  print("Vida del jefe del equipo 2: ${gestorBatalla.jefe2.vida}");
         gestorBatalla.equipo1setAtaque();
         gestorBatalla.equipo1ataca();
       }
       else{
-        // print("equipo 2 ataca");
-        // print("Vida del jefe del equipo 1: ${gestorBatalla.jefe1.vida}");
         gestorBatalla.equipo2setAtaque();
         gestorBatalla.equipo2ataca();
       }
@@ -372,33 +382,51 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
     }
   }
 
-  void _guardarMilitar(String nombre, bool esOficial) {
-    // Guardar el militar en la lista
-    if (nombre.isNotEmpty) {
-      setState(() {
-        _superiorSeleccionado!.then((value) {
-          if (value != null) {
-            if (esOficial) {
-              value.agregar(Oficial(nombre));
-            } else {
-              value.agregar(Raso(nombre));
+  void _guardarMilitar(String nombre, bool esOficial, int numEquipo) {
+    if (numEquipo == 1) {
+      // Guardar el militar en la lista
+      if (nombre.isNotEmpty) {
+        setState(() {
+          _superiorSeleccionado!.then((value) {
+            if (value != null) {
+              if (esOficial) {
+                value.agregar(Oficial(nombre));
+              } else {
+                value.agregar(Raso(nombre));
+              }
             }
-          }
+          });
         });
-
-        //gestorBatalla.getOficiales1();
-      });
-      _rango = 'O';
-      _nombreController.clear();
-      _superiorController.clear();
-    }
-    else {
-      print("esta vacio");
+        _rango = 'O';
+        _nombreController.clear();
+        _superiorController.clear();
+      } else {
+        print("esta vacio");
+      }
+    } else if (numEquipo == 2) {
+      // Guardar el militar en la lista
+      if (nombre.isNotEmpty) {
+        setState(() {
+          _superiorSeleccionado2!.then((value) {
+            if (value != null) {
+              if (esOficial) {
+                value.agregar(Oficial(nombre));
+              } else {
+                value.agregar(Raso(nombre));
+              }
+            }
+          });
+        });
+        _rango2 = 'O';
+        _nombreController2.clear();
+        _superiorController2.clear();
+      } else {
+        print("esta vacio");
+      }
     }
   }
 
   Future<Militar?> _mostrarOficiales(int numEquipo) async {
-    print("Mostrar ${gestorBatalla.jefe1.militares.length}");
 
     List<Militar> oficiales;
     numEquipo == 1
@@ -408,24 +436,22 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
     final seleccionado = await showDialog<Militar?>(
       context: context,
       builder: (BuildContext context) {
-        debugPrint("Primero ${gestorBatalla.jefe1.militares.length}");
 
         return AlertDialog(
+          
           title: const Text(
               'lista de oficiales. Selecciona a que oficial quieres agregarlo:'),
           content: Container(
-            width: double.maxFinite,
+            width: double.maxFinite,            
             child: ListView.builder(
               itemCount: oficiales.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(oficiales[index].nombre),
                   onTap: () {
-                    print("ontap1 ${gestorBatalla.jefe1.militares.length}");
 
                     Navigator.of(context).pop(
                         oficiales[index]); //Devolver el militar seleccionado
-                    print("ontap2 ${gestorBatalla.jefe1.militares.length}");
                   },
                 );
               },
@@ -435,8 +461,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
       },
     );
     oficiales.clear();
-
-    print("Fin mostar ${gestorBatalla.jefe1.militares.length}");
 
     return seleccionado;
   }
@@ -530,22 +554,3 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
 }
 
 
-
-content: Container(
-            width: double.maxFinite,
-            child: ListView.builder(
-              itemCount: oficiales.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(oficiales[index].nombre),
-                  onTap: () {
-                    print("ontap1 ${gestorBatalla.jefe1.militares.length}");
-
-                    Navigator.of(context).pop(
-                        oficiales[index]); //Devolver el militar seleccionado
-                    print("ontap2 ${gestorBatalla.jefe1.militares.length}");
-                  },
-                );
-              },
-            ),
-          ),
