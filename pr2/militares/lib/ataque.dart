@@ -3,7 +3,6 @@ import "militar.dart";
 abstract class Ataque{
   double danio = 0;
 
-
   void atacar(Militar m){
     m.recibeAtaque(danio);
   }
