@@ -53,10 +53,11 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                   children: [
                     //////////// EQUIPO 1 ////////////
                     Expanded(
-                      child: Column(
+                      flex: 1,
+                      child: SingleChildScrollView(child:Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const SubtituloEquipo(equipo: '1'),
+                          const Flexible( fit: FlexFit.tight,flex: 0,child: SubtituloEquipo(equipo: '1'),),
                           Row(children: [
                             Expanded(
                               child: TextField(
@@ -137,7 +138,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                             255, 36, 30, 206),
                                       ),
                                       child: const Text(
-                                          'Seleccionar oficial superior',
+                                          'Seleccionar oficial superior (1)',
                                           style: TextStyle(
                                               height: 4,
                                               fontSize: 20,
@@ -164,6 +165,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
 
                         ],
                       ),
+                      ),
                     ),
 
                     //////////// ESPACIO ENTRE EQUIPOS ////////////
@@ -171,10 +173,11 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
 
                     //////////// EQUIPO 2 ////////////
                     Expanded(
-                      child: Column(
+                      flex: 1,
+                      child: SingleChildScrollView(child:Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const SubtituloEquipo(equipo: '2'),
+                          const Flexible( fit: FlexFit.tight,flex: 0,child: SubtituloEquipo(equipo: '2'),),
                           Row(children: [
                             Expanded(
                               child: TextField(
@@ -255,7 +258,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                             255, 36, 30, 206),
                                       ),
                                       child: const Text(
-                                          'Seleccionar oficial superior',
+                                          'Seleccionar oficial superior (2)',
                                           style: TextStyle(
                                               height: 4,
                                               fontSize: 20,
@@ -280,6 +283,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                             guardarMilitar: _guardarMilitar,
                           ),
                         ],
+                      ),
                       ),
                     ),
                   ],
