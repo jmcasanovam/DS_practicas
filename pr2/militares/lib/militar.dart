@@ -20,7 +20,7 @@ abstract class Militar {
     this.ataque = ataque;
   }
 
-  void agregar(Militar militar);
+  bool agregar(Militar militar);
 
   int cantidadVivos();
 
@@ -34,8 +34,9 @@ class Raso extends Militar {
       : super(nombre, false, 100.0, AtaqueMaritimo());
 
   @override
-  void agregar(Militar militar) {
-    print("No se pueden agregar militares a un raso");
+  bool agregar(Militar militar) {
+    // print("No se pueden agregar militares a un raso");
+    return false;
   }
 
   @override
@@ -79,8 +80,9 @@ class Oficial extends Militar {
   }
 
   @override
-  void agregar(Militar militar) {
+  bool agregar(Militar militar) {
     militares.add(militar);
+    return true;
   }
 
   @override

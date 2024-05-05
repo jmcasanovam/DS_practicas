@@ -29,17 +29,12 @@ void main() {
       expect(oficial.getOficiales().length, 1); // getOficiales() solo devuelve la lista de oficiales, incluyendose a sí mismo, por tanto su tamaño será 1 y no 2 si se incluyera el raso
     });
 
-    test('Agregar militar a un raso', () { //***********MAL********** */
+    test('Agregar militar a un raso', () {
       Raso raso = Raso("Raso1");
-      Militar nuevoMilitar = Oficial("Oficial1");
-      // Cantidad de militares antes de intentar agregar
-      int cantidadAntes = raso.cantidadVivos();
+      Oficial oficial = Oficial("Oficial1");
 
-      raso.agregar(nuevoMilitar);
-      // Cantidad de militares después de intentar agregar
-      int cantidadDespues = raso.cantidadVivos();
-      // Verificamos que la cantidad de militares no haya cambiado
-      expect(cantidadDespues, equals(cantidadAntes)); 
+      
+      expect(raso.agregar(oficial), false); // No se pueden agregar oficiales a un raso
     });
 
     late Raso raso1, raso2, raso3, raso4;
