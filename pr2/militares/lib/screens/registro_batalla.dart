@@ -293,7 +293,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
               //////////// BOTON BATALLA ////////////
               ElevatedButton(
                 onPressed: () {
-                  _batalla();
+                  gestorBatalla.comenzarBatalla();
                   String equipoGanador =
                       "Ha ganado el equipo: ${gestorBatalla.ganador()}\n";
                   String log = gestorBatalla.getRegistro();
@@ -315,19 +315,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
   }
 
 /////////////////////////////////////////////////////////////////////////////////////
-  void _batalla() {
-    int i = 0;
-    while (!gestorBatalla.partidaFinalizada()) {
-      if (i % 2 == 0) {
-        gestorBatalla.equipo1setAtaque();
-        gestorBatalla.equipo1ataca();
-      } else {
-        gestorBatalla.equipo2setAtaque();
-        gestorBatalla.equipo2ataca();
-      }
-      i++;
-    }
-  }
 
   void _guardarMilitar(String nombre, bool esOficial, int numEquipo) {
     if (numEquipo == 1) {
