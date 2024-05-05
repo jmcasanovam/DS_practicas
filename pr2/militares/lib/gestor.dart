@@ -10,6 +10,7 @@ class Gestor {
   int e2vivos = -1;
   String registro = ""; //Lo que se muestra cuando se acaba la partida (log)
   bool fin = false;
+  late bool empiezaEq1;
 
   Gestor() {
     jefe1 = Oficial("Capitan equipo1");
@@ -70,6 +71,21 @@ class Gestor {
       }
     }else{
       return 0;
+    }
+  }
+  
+  void comenzarBatalla(){
+    int i = Random().nextInt(2);
+    empiezaEq1 = i == 0 ? true : false;
+    while (!partidaFinalizada()) {
+      if (i % 2 == 0) {
+        equipo1setAtaque();
+        equipo1ataca();
+      } else {
+        equipo2setAtaque();
+        equipo2ataca();
+      }
+      i++;
     }
   }
 
