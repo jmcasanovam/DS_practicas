@@ -34,6 +34,12 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
   Future<Militar?>? _superiorSeleccionado;
   Future<Militar?>? _superiorSeleccionado2;
 
+  // Lista de usuarios(BASE DE DATOS??????)
+  String currentUser = "Jose";
+  String currentUser2 = "Álvaro";
+  List<String> users = ["Álvaro", "Rubén", "David", "Jose"];
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -67,9 +73,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                     hintText: 'ej. Sargento Casanova'),
                               ),
                             ),
-                            const SizedBox(
-                                width:
-                                    50), //para dejar un espacio entre los campos
+                            const SizedBox(width: 30), //para dejar un espacio entre los campos
                             Expanded(
                               child: TextField(
                                 controller: _superiorController,
@@ -78,11 +82,28 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                     labelText: 'Superior Seleccionado',
                                     hintText: 'Selecciona un superior'),
                               ),
+                            ),
+                            const SizedBox(width: 30,),
+                            Expanded(
+                              child: DropdownButton<String>(
+                                value: currentUser,
+                                icon: const Icon(Icons.face),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    currentUser = newValue!;
+                                   /*  _cargarEjercitoDelUsuario(currentUser); */
+                                  });
+                                },
+                                items: users.map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
                             )
                           ]),
-                          const SizedBox(
-                              height:
-                                  30), //espacio inferior de los campos de texto
+                          const SizedBox(height:30), //espacio inferior de los campos de texto
                           ListView(
                             shrinkWrap: true,
                             physics: const ClampingScrollPhysics(),
@@ -125,17 +146,14 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                       onPressed: () {
                                         // Mostrar la lista de oficiales
                                         setState(() {
-                                          _superiorSeleccionado =
-                                              _mostrarOficiales(1);
+                                          _superiorSeleccionado = _mostrarOficiales(1);
                                           _superiorSeleccionado!.then((value) {
-                                            _superiorController.text =
-                                                value?.nombre ?? '';
+                                            _superiorController.text = value?.nombre ?? '';
                                           });
                                         });
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color.fromARGB(
-                                            255, 36, 30, 206),
+                                        backgroundColor: const Color.fromARGB(255, 36, 30, 206),
                                       ),
                                       child: const Text(
                                           'Seleccionar oficial superior (1)',
@@ -162,7 +180,52 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                             equipo: 1,
                             guardarMilitar: _guardarMilitar,
                           ),
-
+                          SeparacionInferior(),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Mostrar la lista de militares
+                              setState(() {
+                                _superiorSeleccionado = _mostrarMilitares(1); //CAMBIAR IMPLEMENTACIÓN
+                                _superiorSeleccionado!.then((value) {
+                                  _superiorController.text =
+                                      value?.nombre ?? '';
+                                });
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 15, 238, 190),
+                            ),
+                            child: const Text(
+                                'Actualizar Militar del equipo 1',
+                                style: TextStyle(
+                                    height: 4,
+                                    fontSize: 20,
+                                    color: Colors.black)),
+                          ), 
+                          SeparacionInferior(),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Mostrar la lista de militares
+                              setState(() {
+                                _superiorSeleccionado = _mostrarMilitares(1); //CAMBIAR IMPLEMENTACIÓN
+                                _superiorSeleccionado!.then((value) {
+                                  _superiorController.text =
+                                      value?.nombre ?? '';
+                                });
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 255, 66, 66),
+                            ),
+                            child: const Text(
+                                'Eliminar Militar del equipo 1',
+                                style: TextStyle(
+                                    height: 4,
+                                    fontSize: 20,
+                                    color: Colors.black)),
+                          ), 
                         ],
                       ),
                       ),
@@ -187,9 +250,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                     hintText: 'ej. Sargento Casanova'),
                               ),
                             ),
-                            const SizedBox(
-                                width:
-                                    50), //para dejar un espacio entre los campos
+                            const SizedBox( width: 30), //para dejar un espacio entre los campos
                             Expanded(
                               child: TextField(
                                 controller: _superiorController2,
@@ -198,11 +259,28 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                     labelText: 'Superior Seleccionado',
                                     hintText: 'Selecciona un superior'),
                               ),
+                            ),
+                            const SizedBox(width: 30,),
+                            Expanded(
+                              child: DropdownButton<String>(
+                                value: currentUser2,
+                                icon: const Icon(Icons.face),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    currentUser2 = newValue!;
+                                   /*  _cargarEjercitoDelUsuario(currentUser); */
+                                  });
+                                },
+                                items: users.map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
                             )
                           ]),
-                          const SizedBox(
-                              height:
-                                  30), //espacio inferior de los campos de texto
+                          const SizedBox(height: 30), //espacio inferior de los campos de texto
                           ListView(
                             shrinkWrap: true,
                             physics: const ClampingScrollPhysics(),
@@ -282,6 +360,52 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                             equipo: 2,
                             guardarMilitar: _guardarMilitar,
                           ),
+                          SeparacionInferior(),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Mostrar la lista de militares
+                              setState(() {
+                                _superiorSeleccionado2 = _mostrarMilitares(2); //CAMBIAR IMPLEMENTACIÓN
+                                _superiorSeleccionado2!.then((value) {
+                                  _superiorController2.text =
+                                      value?.nombre ?? '';
+                                });
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 15, 238, 190),
+                            ),
+                            child: const Text(
+                                'Actualizar Militar del equipo 2',
+                                style: TextStyle(
+                                    height: 4,
+                                    fontSize: 20,
+                                    color: Colors.black)),
+                          ),
+                          SeparacionInferior(),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Mostrar la lista de militares
+                              setState(() {
+                                _superiorSeleccionado2 = _mostrarMilitares(2); //CAMBIAR IMPLEMENTACIÓN
+                                _superiorSeleccionado2!.then((value) {
+                                  _superiorController2.text =
+                                      value?.nombre ?? '';
+                                });
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 255, 66, 66),
+                            ),
+                            child: const Text(
+                                'Eliminar Militar del equipo 2',
+                                style: TextStyle(
+                                    height: 4,
+                                    fontSize: 20,
+                                    color: Colors.black)),
+                          ),
                         ],
                       ),
                       ),
@@ -293,9 +417,9 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
               //////////// BOTON BATALLA ////////////
               ElevatedButton(
                 onPressed: () {
-                  gestorBatalla.comenzarBatalla();
-                  String equipoGanador =
-                      "Ha ganado el equipo: ${gestorBatalla.ganador()}\n";
+                  batalla();
+                  String equipoGanador = 
+                          "Ha ganado el equipo de ${gestorBatalla.ganador() == 1 ? currentUser : currentUser2}: ${gestorBatalla.ganador()}  \n";
                   String log = gestorBatalla.getRegistro();
                   _imprimirResultadoBatalla(log, equipoGanador);
                 },
@@ -391,6 +515,42 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
       },
     );
     oficiales.clear();
+
+    return seleccionado;
+  }
+
+  
+  Future<Militar?> _mostrarMilitares(int numEquipo) async {
+    List<Militar> militares;
+    numEquipo == 1
+        ? militares = gestorBatalla.getOficiales1() //MODIFICAR OBTENER TODOS LOS MILITARES, NO SOLO OFICIALES
+        : militares = gestorBatalla.getOficiales2();
+
+    final seleccionado = await showDialog<Militar?>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+              'Militares del equipo.'),
+          content: Container(
+            width: double.maxFinite,
+            child: ListView.builder(
+              itemCount: militares.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(militares[index].nombre),
+                  onTap: () {
+                    Navigator.of(context).pop(
+                        militares[index]); //Devolver el militar seleccionado
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+    militares.clear();
 
     return seleccionado;
   }
