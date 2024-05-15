@@ -22,11 +22,16 @@ abstract class Militar {
 
   bool agregar(Militar militar);
 
+  void eliminarHijos();
+
   int cantidadVivos();
 
   String imprimirJerarquia(int indent);
 
   List<Militar> getOficiales();
+
+  List<Militar> getRasos();
+
 }
 
 class Raso extends Militar {
@@ -37,6 +42,11 @@ class Raso extends Militar {
   bool agregar(Militar militar) {
     // print("No se pueden agregar militares a un raso");
     return false;
+  }
+
+  @override
+  void eliminarHijos() {
+    
   }
 
   @override
@@ -62,6 +72,11 @@ class Raso extends Militar {
   List<Militar> getOficiales() {
     return [];
   }
+
+  @override
+  List<Militar> getRasos() {
+    return [this];
+  }
 }
 
 class Oficial extends Militar {
@@ -83,6 +98,18 @@ class Oficial extends Militar {
   bool agregar(Militar militar) {
     militares.add(militar);
     return true;
+  }
+
+  @override
+  void eliminarHijos() {
+    for(int i=0; i<militares.length; i++){
+      militares[i].eliminarHijos();
+      militares.removeAt(i);
+    }
+    // for(Militar m in militares){
+    //   m.eliminarHijos();
+    //   militares.remove(m);
+    // }
   }
 
   @override
@@ -133,6 +160,19 @@ class Oficial extends Militar {
       }
     }
     return oficiales;
+  }
+
+  @override
+  List<Militar> getRasos(){
+    List<Militar> rasos = [];
+    if(militares.isEmpty){
+      return rasos;
+    }else{
+      for(Militar m in militares){
+        rasos.addAll(m.getRasos());
+      }
+    }
+    return rasos;
   }
 }
 
