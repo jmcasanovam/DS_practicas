@@ -101,4 +101,96 @@ class Gestor {
     return jefe2.getOficiales(); 
   }
 
+  List<Militar> getRasos1(){
+    return jefe1.getRasos(); 
+  }
+
+  List<Militar> getRasos2(){
+    return jefe2.getRasos(); 
+  }
+
+  List<Militar> getMilitares1(){
+    List<Militar> junta=jefe1.getOficiales();
+    List<Militar> rasos=jefe1.getRasos();
+    junta.addAll(rasos);
+    return junta;
+  }
+
+  List<Militar> getMilitares2(){
+    List<Militar> junta=jefe2.getOficiales();
+    List<Militar> rasos=jefe2.getRasos();
+    junta.addAll(rasos);
+    return junta;
+  }
+
+  void convertirAOficial1(Raso r){
+    bool encontrado=false;
+    for(Militar oficial in getOficiales1()){
+      for(Militar raso in (oficial as Oficial).militares){
+        if(raso==r){
+          Oficial nuevo= Oficial(r.nombre);
+          nuevo.ataque=r.ataque;
+          nuevo.vida=r.vida*1.5;
+          oficial.militares.remove(raso);
+          oficial.militares.add(nuevo);
+          encontrado=true;
+          break;
+        }
+      }
+      if(encontrado) break;
+    }
+  }
+
+  void convertirAOficial2(Raso r){
+    bool encontrado=false;
+    for(Militar oficial in getOficiales2()){
+      for(Militar raso in (oficial as Oficial).militares){
+        if(raso==r){
+          Oficial nuevo= Oficial(r.nombre);
+          nuevo.ataque=r.ataque;
+          nuevo.vida=r.vida*1.5;
+          oficial.militares.remove(raso);
+          oficial.militares.add(nuevo);
+          encontrado=true;
+          break;
+        }
+      }
+      if(encontrado) break;
+    }
+  }
+
+  void cambiarNombre(Militar m, String nombre){
+    m.nombre=nombre;
+  }
+
+  void eliminarMilitar1(Militar m){
+    bool encontrado=false;
+    for(Militar oficial in getOficiales1()){
+      for(Militar hijo in (oficial as Oficial).militares){
+        if(hijo==m){
+          hijo.eliminarHijos();
+          oficial.militares.remove(hijo);
+          encontrado=true;
+          break;
+        }
+      }
+      if(encontrado) break;
+    }
+  }
+
+  void eliminarMilitar2(Militar m){
+    bool encontrado=false;
+    for(Militar oficial in getOficiales2()){
+      for(Militar hijo in (oficial as Oficial).militares){
+        if(hijo==m){
+          hijo.eliminarHijos();
+          oficial.militares.remove(hijo);
+          encontrado=true;
+          break;
+        }
+      }
+      if(encontrado) break;
+    }
+  }
+
 }
