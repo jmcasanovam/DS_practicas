@@ -342,8 +342,7 @@ class Gestor {
     }
   }
 
-  Future<void> actualizarMilitar( String nombre, String nombreNuevo, String nombrePadre, String usuario) async {
-    
+  Future<void> actualizarMilitar1( String nombre, String nombreNuevo, String nombrePadre, String usuario) async {
     final response = await http.patch(
       Uri.parse('$apiUrl/militars?usuario=$usuario&nombre=$nombre'),
       headers: <String, String>{
@@ -362,4 +361,25 @@ class Gestor {
       throw Exception('Failed to update task');
     }
   }
+
+  Future<void> actualizarMilitar2( String nombre, String nombreNuevo, String nombrePadre, String usuario) async {
+    final response = await http.patch(
+      Uri.parse('$apiUrl/militars?usuario=$usuario&nombre=$nombre'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'nombre' : nombreNuevo,
+        'nombre_superior': nombrePadre,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Militar m = encontrarMilitarPorNombre(jefe2, nombre)!;
+      m.nombre = nombreNuevo;
+    } else {
+      throw Exception('Failed to update task');
+    }
+  }
+
 }

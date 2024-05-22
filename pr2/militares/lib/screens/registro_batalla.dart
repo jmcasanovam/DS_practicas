@@ -529,7 +529,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
 
 /////////////////////////////////////////////////////////////////////////////////////
   
-  void funcionActualizar(int equipo, Militar? value){
+  void funcionActualizar(int equipo, Militar? value) async{
     if(equipo==1){
       String padre="";
       bool encontrado=false;
@@ -543,13 +543,15 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
         }
         if (encontrado) break;
       }
-      gestorBatalla.actualizarMilitar(value!.nombre, _nombreController.text, padre, currentUser);
+      await gestorBatalla.actualizarMilitar1(value!.nombre, _nombreController.text, padre, currentUser);
       _nombreController.text = '';
       if( value is Oficial ){
         for(Militar m in value.militares){
-          gestorBatalla.actualizarMilitar(m.nombre, m.nombre, _nombreController.text, currentUser);
+          await gestorBatalla.actualizarMilitar1(m.nombre, m.nombre, _nombreController.text, currentUser);
         }
+        
       }
+      
     }
     else if(equipo==2){
       String padre="";
@@ -564,11 +566,11 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
         }
         if (encontrado) break;
       }
-      gestorBatalla.actualizarMilitar(value!.nombre, _nombreController2.text, padre, currentUser2);
+      gestorBatalla.actualizarMilitar2(value!.nombre, _nombreController2.text, padre, currentUser2);
       _nombreController2.text = '';
       if( value is Oficial ){
         for(Militar m in value.militares){
-          gestorBatalla.actualizarMilitar(m.nombre, m.nombre, _nombreController2.text, currentUser2);
+          gestorBatalla.actualizarMilitar2(m.nombre, m.nombre, _nombreController2.text, currentUser2);
         }
       }
     }

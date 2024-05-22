@@ -31,6 +31,7 @@ void main() {
     await gestorBatalla.cargarMilitares1("David");
 
 
+
     print(gestorBatalla.jefe1.imprimirJerarquia(0));
 
 
