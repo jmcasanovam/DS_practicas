@@ -6,31 +6,30 @@ import 'package:militares/ataque.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  // test("Test agregar", () async{
-  //   Gestor gestorBatalla = Gestor();
-  //   Oficial of1 = Oficial("of1");
-  //   of1.usuario = "Ruben";
-  //   await gestorBatalla.agregar(of1, "Capitan equipo1");
-  //   Oficial of2 = Oficial("of100");
-  //   of2.usuario = "Ruben";
-  //   await gestorBatalla.agregar(of2, "Capitan equipo1");
+  test("Test agregar", () async{
+    Gestor gestorBatalla = Gestor();
+    Raso raso2 = Raso("raso2");
+    Raso raso3 = Raso("raso3");
 
-  //   for (Militar m in gestorBatalla.getMilitares1()) {
-  //     print("Nombre: ${m.nombre}");
-  //   }
+    raso2.usuario = "David";
+    raso3.usuario = "David";
 
-  //   print("Numero de oficiales: ${gestorBatalla.getMilitares1().length}");
-  //   print(gestorBatalla.getMilitares1());
-  //   print("Numero de militares en vector MisMilitares: ${gestorBatalla.misMilitares.length}");
-  //   print(gestorBatalla.misMilitares);
-    
-  // });
+    await gestorBatalla.agregar1(raso2, "of2");
+    await gestorBatalla.agregar1(raso3, "of2");
+
+
+
+    // for (Militar m in gestorBatalla.getMilitares1()) {
+    //   print("Nombre: ${m.nombre}");
+    // }
+
+  });
 
   // test("Test Delete", () async {
   //   Gestor gestorBatalla = Gestor();
-    
-  //   await gestorBatalla.eliminar("of23", "Jose");
-  //   await gestorBatalla.eliminar("of24", "Jose");
+  //   await gestorBatalla.eliminar("of1", "ahsd");
+
+  //   await gestorBatalla.eliminar("of2", "ahsbd");
   // });
 
   // test("Test Modificar", () {
@@ -39,16 +38,13 @@ void main() {
   //   gestorBatalla.modificar("of11", "Jose", "Capitan equipo1");
   // });
 
-  
-
   // test("Test cargarmilitar", () async {
   //   Gestor gestorBatalla = Gestor();
 
-  //   await gestorBatalla.cargarMilitares1("Jose");
+  //   await gestorBatalla.cargarMilitares2("Jose");
 
-  //   print("Numero de militares en vector MisMilitares: ${gestorBatalla.misMilitares.length}");
-  //   print(gestorBatalla.misMilitares);
-    
+  //   // print("Numero de militares en vector MisMilitares: ${gestorBatalla.misMilitares.length}");
+  //   // print(gestorBatalla.misMilitares);
   // });
 
   /////////// TESTS DEL GRUPO DE CLASES DEL MODELO ///////////

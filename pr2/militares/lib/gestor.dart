@@ -17,8 +17,8 @@ class Gestor {
   List<Militar> misMilitares = [];
 
   Gestor() {
-    jefe1 = Oficial("Capitan equipo1");
-    jefe2 = Oficial("Capitan equipo2");
+    jefe1 = Oficial("Capitan equipo");
+    jefe2 = Oficial("Capitan equipo");
   }
 
   void equipo1setAtaque() {
@@ -199,18 +199,79 @@ class Gestor {
     }
   }
 
+  Militar? encontrarMilitarPorNombre(Oficial of, String nom) {
+    for (int i = 0; i < of.militares.length; i++) {
+      if (of.militares[i].nombre == nom) {
+        return of.militares[i];
+      }
+      if (of.militares[i] is Oficial) {
+        Oficial of2 = of.militares[i] as Oficial;
+        if (encontrarMilitarPorNombre(of2, nom) != null) {
+          return encontrarMilitarPorNombre(of2, nom);
+        }
+      }
+    }
+    return null;
+  }
+
   Future<void> cargarMilitares1(String usuario) async {
+    jefe1.militares.clear();
     final response = await http.get(Uri.parse('$apiUrl?usuario=$usuario'));
     if (response.statusCode == 200) {
       List<dynamic> militaresJson = json.decode(response.body);
-      misMilitares.clear();
-      misMilitares.addAll(militaresJson.map((json) => Militar.fromJson(json)).toList());
+
+      List<Militar> padres = getOficiales1();
+      int index = 0;
+      while (index < padres.length) {
+        Militar padre = padres[index];
+        for (dynamic hijo in militaresJson) {
+          if (padre.nombre == hijo['nombre_superior']) {
+            getOficiales1().firstWhere((militar) => militar.nombre == padre.nombre).agregar(Militar.fromJson(hijo));
+          }
+          if(hijo['oficial']==true ){
+            if(!padres.any((p) => p.nombre == hijo['nombre'])){
+              padres.add(Militar.fromJson(hijo));
+            }
+          }
+        }
+        index++;
+      }
+
     } else {
       throw Exception('Failed to load militars');
     }
   }
 
-  Future<void> agregar(Militar militar, String nombrepadre) async {
+  Future<void> cargarMilitares2(String usuario) async {
+    jefe2.militares.clear();
+    final response = await http.get(Uri.parse('$apiUrl?usuario=$usuario'));
+    if (response.statusCode == 200) {
+      List<dynamic> militaresJson = json.decode(response.body);
+
+      List<Militar> padres = getOficiales2();
+      int index = 0;
+      while (index < padres.length) {
+        Militar padre = padres[index];
+        for (dynamic hijo in militaresJson) {
+          if (padre.nombre == hijo['nombre_superior']) {
+            getOficiales2().firstWhere((militar) => militar.nombre == padre.nombre).agregar(Militar.fromJson(hijo));
+          }
+          if(hijo['oficial']==true ){
+            if(!padres.any((p) => p.nombre == hijo['nombre'])){
+              padres.add(Militar.fromJson(hijo));
+            }
+          }
+        }
+        index++;
+      }
+    
+
+    } else {
+      throw Exception('Failed to load militars');
+    }
+  }
+
+  Future<void> agregar1(Militar militar, String nombrepadre) async {
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: <String, String>{
@@ -230,9 +291,30 @@ class Gestor {
     }
   }
 
+  Future<void> agregar2(Militar militar, String nombrepadre) async {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(militar.toJson(nombrepadre)),
+    );
+    if (response.statusCode == 201) {
+      for (Militar oficial in getOficiales2()) {
+        if (oficial.nombre == nombrepadre) {
+          oficial.agregar(Militar.fromJson(json.decode(response.body)));
+        }
+      }
+      misMilitares.add(Militar.fromJson(json.decode(response.body)));
+    } else {
+      throw Exception('Failed to add militar: ${response.body}');
+    }
+  }
+
   Future<void> eliminar(String nombre, String usuario) async {
     final response = await http.delete(
       Uri.parse('$apiUrl/militars?usuario=$usuario&nombre=$nombre'),
+
     );
     if (response.statusCode == 200) {
       misMilitares.removeWhere((t) => t.nombre == nombre);

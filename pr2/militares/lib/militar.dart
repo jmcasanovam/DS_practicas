@@ -40,7 +40,7 @@ abstract class Militar {
         usuario: json['usuario'],
       );
     }else{
-      return Oficial(
+      return Raso(
         json['nombre'] as String,
         usuario: json['usuario'],
       );

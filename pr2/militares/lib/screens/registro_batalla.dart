@@ -6,6 +6,7 @@ import 'package:militares/widgets/botonJerarquia.dart';
 import 'package:militares/widgets/separacionInferior.dart';
 import 'package:militares/widgets/subtituloEquipo.dart';
 import '../widgets/titulo.dart';
+import 'dart:math';
 
 class RegistroBatalla extends StatefulWidget {
   const RegistroBatalla({super.key});
@@ -36,8 +37,38 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
 
   // Lista de usuarios(BASE DE DATOS??????)
   String currentUser = "Jose";
-  String currentUser2 = "Álvaro";
-  List<String> users = ["Álvaro", "Rubén", "David", "Jose"];
+  String currentUser2 = "Alvaro";
+  List<String> users = ["Alvaro", "Ruben", "David", "Jose"];
+
+  @override
+  void initState() {
+    _cargarEquipo1(currentUser);
+    _cargarEquipo2(currentUser2);
+  }
+
+  _cargarEquipo1(String nombre) async {
+    try {
+      await gestorBatalla.cargarMilitares1(nombre);
+      setState(() {
+        // gestorBatalla.jefe1.militares = gestorBatalla.jefe1.militares;
+      });
+    } catch (e) {
+      print("Error loading tasks: $e");
+    }
+  }
+
+
+
+  _cargarEquipo2(String nombre) async {
+    try {
+      await gestorBatalla.cargarMilitares2(nombre);
+      setState(() {
+        // gestorBatalla.jefe2.militares = gestorBatalla.jefe2.militares;
+      });
+    } catch (e) {
+      print("Error loading tasks: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,174 +90,232 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                     //////////// EQUIPO 1 ////////////
                     Expanded(
                       flex: 1,
-                      child: SingleChildScrollView(child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Flexible( fit: FlexFit.tight,flex: 0,child: SubtituloEquipo(equipo: '1'),),
-                          Row(children: [
-                            Expanded(
-                              child: TextField(
-                                controller: _nombreController,
-                                decoration: const InputDecoration(
-                                    labelText: 'Nombre del militar',
-                                    hintText: 'ej. Sargento Casanova'),
-                              ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Flexible(
+                              fit: FlexFit.tight,
+                              flex: 0,
+                              child: SubtituloEquipo(equipo: '1'),
                             ),
-                            const SizedBox(width: 30), //para dejar un espacio entre los campos
-                            Expanded(
-                              child: TextField(
-                                controller: _superiorController,
-                                readOnly: true,
-                                decoration: const InputDecoration(
-                                    labelText: 'Superior Seleccionado',
-                                    hintText: 'Selecciona un superior'),
+                            Row(children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _nombreController,
+                                  decoration: const InputDecoration(
+                                      labelText: 'Nombre del militar',
+                                      hintText: 'ej. Sargento Casanova'),
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 30,),
-                            Expanded(
-                              child: DropdownButton<String>(
-                                value: currentUser,
-                                icon: const Icon(Icons.face),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    currentUser = newValue!;
-                                   /*  _cargarEjercitoDelUsuario(currentUser); */
-                                  });
-                                },
-                                items: users.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
+                              const SizedBox(
+                                  width:
+                                      30), //para dejar un espacio entre los campos
+                              Expanded(
+                                child: TextField(
+                                  controller: _superiorController,
+                                  readOnly: true,
+                                  decoration: const InputDecoration(
+                                      labelText: 'Superior Seleccionado',
+                                      hintText: 'Selecciona un superior'),
+                                ),
                               ),
-                            )
-                          ]),
-                          const SizedBox(height:30), //espacio inferior de los campos de texto
-                          ListView(
-                            shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        ListTile(
-                                          title: const Text('Oficial'),
-                                          leading: Radio<String>(
-                                            value: 'O',
-                                            groupValue: _rango,
-                                            onChanged: (String? value) {
-                                              setState(() {
-                                                _rango = value!;
-                                              });
-                                            },
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              Expanded(
+                                child: DropdownButton<String>(
+                                  value: currentUser,
+                                  icon: const Icon(Icons.face),
+                                  onChanged: (String? newValue) {
+                                    setState((){
+                                      currentUser = newValue!;
+                                      _cargarEquipo1(currentUser);
+                                    });
+                                  },
+                                  items: users.map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            ]),
+                            const SizedBox(
+                                height:
+                                    30), //espacio inferior de los campos de texto
+                            ListView(
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          ListTile(
+                                            title: const Text('Oficial'),
+                                            leading: Radio<String>(
+                                              value: 'O',
+                                              groupValue: _rango,
+                                              onChanged: (String? value) {
+                                                setState(() {
+                                                  _rango = value!;
+                                                });
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                        ListTile(
-                                          title: const Text('Raso'),
-                                          leading: Radio<String>(
-                                            value: 'R',
-                                            groupValue: _rango,
-                                            onChanged: (String? value) {
-                                              setState(() {
-                                                _rango = value!;
-                                              });
-                                            },
+                                          ListTile(
+                                            title: const Text('Raso'),
+                                            leading: Radio<String>(
+                                              value: 'R',
+                                              groupValue: _rango,
+                                              onChanged: (String? value) {
+                                                setState(() {
+                                                  _rango = value!;
+                                                });
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        // Mostrar la lista de oficiales
-                                        setState(() {
-                                          _superiorSeleccionado = _mostrarOficiales(1);
-                                          _superiorSeleccionado!.then((value) {
-                                            _superiorController.text = value?.nombre ?? '';
-                                          });
-                                        });
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color.fromARGB(255, 36, 30, 206),
+                                        ],
                                       ),
-                                      child: const Text(
-                                          'Seleccionar oficial superior (1)',
-                                          style: TextStyle(
-                                              height: 4,
-                                              fontSize: 20,
-                                              color: Colors.black)),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SeparacionInferior(),
-                          BotonJerarquia(
-                              function: _imprimirJerarquia,
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          // Mostrar la lista de oficiales
+                                          setState(() {
+                                            _superiorSeleccionado =
+                                                _mostrarOficiales(1);
+                                            _superiorSeleccionado!
+                                                .then((value) {
+                                              _superiorController.text =
+                                                  value?.nombre ?? '';
+                                            });
+                                          });
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 36, 30, 206),
+                                        ),
+                                        child: const Text(
+                                            'Seleccionar oficial superior (1)',
+                                            style: TextStyle(
+                                                height: 4,
+                                                fontSize: 20,
+                                                color: Colors.black)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SeparacionInferior(),
+                            BotonJerarquia(
+                                function: _imprimirJerarquia,
+                                equipo: 1,
+                                color: const Color.fromARGB(255, 193, 183, 1),
+                                texto: 'Mostrar jerarquía del Equipo 1'),
+                            SeparacionInferior(),
+                            BotonGuardarMilitar(
+                              rango: _rango,
+                              nombre: _nombreController.text,
                               equipo: 1,
-                              color: const Color.fromARGB(255, 193, 183, 1),
-                              texto: 'Mostrar jerarquía del Equipo 1'),
-                          SeparacionInferior(),
-                          BotonGuardarMilitar(
-                            rango: _rango,
-                            nombre: _nombreController.text,
-                            equipo: 1,
-                            guardarMilitar: _guardarMilitar,
-                          ),
-                          SeparacionInferior(),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Mostrar la lista de militares
-                              setState(() {
-                                _superiorSeleccionado = _mostrarMilitares(1); //CAMBIAR IMPLEMENTACIÓN
-                                _superiorSeleccionado!.then((value) {
-                                  _superiorController.text =
+                              guardarMilitar: _guardarMilitar,
+                            ),
+                            SeparacionInferior(),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Mostrar la lista de militares
+                                setState(() {
+                                  _superiorSeleccionado = _mostrarMilitares(
+                                      1); //CAMBIAR IMPLEMENTACIÓN
+                                  _superiorSeleccionado!.then((value) {
+                                    gestorBatalla
+                                        .encontrarMilitarPorNombre(
+                                            gestorBatalla.jefe1, value!.nombre)!
+                                        .nombre = _nombreController.text;
+                                    _superiorController.text =
+                                        _nombreController.text = '';
+                                    print(
+                                        gestorBatalla.encontrarMilitarPorNombre(
+                                            gestorBatalla.jefe1, value.nombre));
+                                    if (gestorBatalla
+                                            .encontrarMilitarPorNombre(
+                                                gestorBatalla.jefe1,
+                                                value.nombre)!
+                                            .oficial ==
+                                        false) {
+                                      print(gestorBatalla
+                                          .encontrarMilitarPorNombre(
+                                              gestorBatalla.jefe1,
+                                              value.nombre));
+                                      gestorBatalla.convertirAOficial1(
+                                          gestorBatalla
+                                              .encontrarMilitarPorNombre(
+                                                  gestorBatalla.jefe1,
+                                                  value.nombre) as Raso);
                                       value?.nombre ?? '';
+                                    }
+                                  });
                                 });
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 15, 238, 190),
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 15, 238, 190),
+                              ),
+                              child: const Text(
+                                  'Actualizar Militar del equipo 1',
+                                  style: TextStyle(
+                                      height: 4,
+                                      fontSize: 20,
+                                      color: Colors.black)),
                             ),
-                            child: const Text(
-                                'Actualizar Militar del equipo 1',
-                                style: TextStyle(
-                                    height: 4,
-                                    fontSize: 20,
-                                    color: Colors.black)),
-                          ), 
-                          SeparacionInferior(),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Mostrar la lista de militares y ELIMINA un militar
-                              setState(() {
-                                _superiorSeleccionado = _mostrarMilitares(1); 
-                                _superiorSeleccionado!.then((value) {
-                                  gestorBatalla.eliminarMilitar1(value as Militar);
-                                  _superiorController2.text = '';
+                            SeparacionInferior(),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Mostrar la lista de militares y ELIMINA un militar
+                                setState(() {
+                                  _superiorSeleccionado = _mostrarMilitares(1);
+                                  _superiorSeleccionado!.then((value) {
+                                    gestorBatalla
+                                        .eliminarMilitar1(value as Militar);
+                                    _superiorController2.text = '';
+                                  });
                                 });
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 255, 66, 66),
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 255, 66, 66),
+                              ),
+                              child: const Text('Eliminar Militar del equipo 1',
+                                  style: TextStyle(
+                                      height: 4,
+                                      fontSize: 20,
+                                      color: Colors.black)),
                             ),
-                            child: const Text(
-                                'Eliminar Militar del equipo 1',
-                                style: TextStyle(
-                                    height: 4,
-                                    fontSize: 20,
-                                    color: Colors.black)),
-                          ), 
-                        ],
-                      ),
+                            SeparacionInferior(),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  //FUNCIONALIDAD
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 66, 164, 255),
+                              ),
+                              child: const Text('GUARDAR EQUIPO EN BD',
+                                  style: TextStyle(
+                                      height: 4,
+                                      fontSize: 20,
+                                      color: Colors.black)),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
 
@@ -236,177 +325,209 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                     //////////// EQUIPO 2 ////////////
                     Expanded(
                       flex: 1,
-                      child: SingleChildScrollView(child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Flexible( fit: FlexFit.tight,flex: 0,child: SubtituloEquipo(equipo: '2'),),
-                          Row(children: [
-                            Expanded(
-                              child: TextField(
-                                controller: _nombreController2,
-                                decoration: const InputDecoration(
-                                    labelText: 'Nombre del militar',
-                                    hintText: 'ej. Sargento Casanova'),
-                              ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Flexible(
+                              fit: FlexFit.tight,
+                              flex: 0,
+                              child: SubtituloEquipo(equipo: '2'),
                             ),
-                            const SizedBox( width: 30), //para dejar un espacio entre los campos
-                            Expanded(
-                              child: TextField(
-                                controller: _superiorController2,
-                                readOnly: true,
-                                decoration: const InputDecoration(
-                                    labelText: 'Superior Seleccionado',
-                                    hintText: 'Selecciona un superior'),
+                            Row(children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _nombreController2,
+                                  decoration: const InputDecoration(
+                                      labelText: 'Nombre del militar',
+                                      hintText: 'ej. Sargento Casanova'),
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 30,),
-                            Expanded(
-                              child: DropdownButton<String>(
-                                value: currentUser2,
-                                icon: const Icon(Icons.face),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    currentUser2 = newValue!;
-                                   /*  _cargarEjercitoDelUsuario(currentUser); */
-                                  });
-                                },
-                                items: users.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
+                              const SizedBox(
+                                  width:
+                                      30), //para dejar un espacio entre los campos
+                              Expanded(
+                                child: TextField(
+                                  controller: _superiorController2,
+                                  readOnly: true,
+                                  decoration: const InputDecoration(
+                                      labelText: 'Superior Seleccionado',
+                                      hintText: 'Selecciona un superior'),
+                                ),
                               ),
-                            )
-                          ]),
-                          const SizedBox(height: 30), //espacio inferior de los campos de texto
-                          ListView(
-                            shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        ListTile(
-                                          title: const Text('Oficial'),
-                                          leading: Radio<String>(
-                                            value: 'O',
-                                            groupValue: _rango2,
-                                            onChanged: (String? value) {
-                                              setState(() {
-                                                _rango2 = value!;
-                                              });
-                                            },
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              Expanded(
+                                child: DropdownButton<String>(
+                                  value: currentUser2,
+                                  icon: const Icon(Icons.face),
+                                  onChanged: (String? newValue) {
+                                    setState((){
+                                      currentUser2 = newValue!;
+                                      /*  _cargarEjercitoDelUsuario(currentUser); */
+                                      _cargarEquipo2(currentUser2);
+                                    });
+                                  },
+                                  items: users.map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            ]),
+                            const SizedBox(
+                                height:
+                                    30), //espacio inferior de los campos de texto
+                            ListView(
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          ListTile(
+                                            title: const Text('Oficial'),
+                                            leading: Radio<String>(
+                                              value: 'O',
+                                              groupValue: _rango2,
+                                              onChanged: (String? value) {
+                                                setState(() {
+                                                  _rango2 = value!;
+                                                });
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                        ListTile(
-                                          title: const Text('Raso'),
-                                          leading: Radio<String>(
-                                            value: 'R',
-                                            groupValue: _rango2,
-                                            onChanged: (String? value) {
-                                              setState(() {
-                                                _rango2 = value!;
-                                              });
-                                            },
+                                          ListTile(
+                                            title: const Text('Raso'),
+                                            leading: Radio<String>(
+                                              value: 'R',
+                                              groupValue: _rango2,
+                                              onChanged: (String? value) {
+                                                setState(() {
+                                                  _rango2 = value!;
+                                                });
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        // Mostrar la lista de oficiales
-                                        setState(() {
-                                          _superiorSeleccionado2 =
-                                              _mostrarOficiales(2);
-                                          _superiorSeleccionado2!.then((value) {
-                                            _superiorController2.text =
-                                                value?.nombre ?? '';
-                                          });
-                                        });
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color.fromARGB(
-                                            255, 36, 30, 206),
+                                        ],
                                       ),
-                                      child: const Text(
-                                          'Seleccionar oficial superior (2)',
-                                          style: TextStyle(
-                                              height: 4,
-                                              fontSize: 20,
-                                              color: Colors.black)),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SeparacionInferior(),
-                          BotonJerarquia(
-                              function: _imprimirJerarquia,
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          // Mostrar la lista de oficiales
+                                          setState(() {
+                                            _superiorSeleccionado2 =
+                                                _mostrarOficiales(2);
+                                            _superiorSeleccionado2!
+                                                .then((value) {
+                                              _superiorController2.text =
+                                                  value?.nombre ?? '';
+                                            });
+                                          });
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 36, 30, 206),
+                                        ),
+                                        child: const Text(
+                                            'Seleccionar oficial superior (2)',
+                                            style: TextStyle(
+                                                height: 4,
+                                                fontSize: 20,
+                                                color: Colors.black)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SeparacionInferior(),
+                            BotonJerarquia(
+                                function: _imprimirJerarquia,
+                                equipo: 2,
+                                color: const Color.fromARGB(255, 193, 183, 1),
+                                texto: 'Mostrar jerarquía del Equipo 2'),
+                            SeparacionInferior(),
+                            BotonGuardarMilitar(
+                              rango: _rango2,
+                              nombre: _nombreController2.text,
                               equipo: 2,
-                              color: const Color.fromARGB(255, 193, 183, 1),
-                              texto: 'Mostrar jerarquía del Equipo 2'),
-                          SeparacionInferior(),
-                          BotonGuardarMilitar(
-                            rango: _rango2,
-                            nombre: _nombreController2.text,
-                            equipo: 2,
-                            guardarMilitar: _guardarMilitar,
-                          ),
-                          SeparacionInferior(),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Mostrar la lista de militares
-                              setState(() {
-                                _superiorSeleccionado2 = _mostrarMilitares(2); //CAMBIAR IMPLEMENTACIÓN
-                                _superiorSeleccionado2!.then((value) {
-                                  _superiorController2.text =
-                                      value?.nombre ?? '';
-                                });
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 15, 238, 190),
+                              guardarMilitar: _guardarMilitar,
                             ),
-                            child: const Text(
-                                'Actualizar Militar del equipo 2',
-                                style: TextStyle(
-                                    height: 4,
-                                    fontSize: 20,
-                                    color: Colors.black)),
-                          ),
-                          SeparacionInferior(),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Mostrar la lista de militares y ELIMINA un militar
-                              setState(() {
-                                _superiorSeleccionado2 = _mostrarMilitares(2); 
-                                _superiorSeleccionado2!.then((value) {
-                                  gestorBatalla.eliminarMilitar2(value as Militar);
-                                  _superiorController2.text = '';
+                            SeparacionInferior(),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Mostrar la lista de militares
+                                setState(() {
+                                  _superiorSeleccionado2 = _mostrarMilitares(
+                                      2); //CAMBIAR IMPLEMENTACIÓN
+                                  _superiorSeleccionado2!.then((value) {
+                                    _superiorController2.text =
+                                        value?.nombre ?? '';
+                                  });
                                 });
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 255, 66, 66),
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 15, 238, 190),
+                              ),
+                              child: const Text(
+                                  'Actualizar Militar del equipo 2',
+                                  style: TextStyle(
+                                      height: 4,
+                                      fontSize: 20,
+                                      color: Colors.black)),
                             ),
-                            child: const Text(
-                                'Eliminar Militar del equipo 2',
-                                style: TextStyle(
-                                    height: 4,
-                                    fontSize: 20,
-                                    color: Colors.black)),
-                          ),
-                        ],
-                      ),
+                            SeparacionInferior(),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Mostrar la lista de militares y ELIMINA un militar
+                                setState(() {
+                                  _superiorSeleccionado2 = _mostrarMilitares(2);
+                                  _superiorSeleccionado2!.then((value) {
+                                    gestorBatalla
+                                        .eliminarMilitar2(value as Militar);
+                                    _superiorController2.text = '';
+                                  });
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 255, 66, 66),
+                              ),
+                              child: const Text('Eliminar Militar del equipo 2',
+                                  style: TextStyle(
+                                      height: 4,
+                                      fontSize: 20,
+                                      color: Colors.black)),
+                            ),
+                            SeparacionInferior(),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  //FUNCIONALIDAD
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 66, 164, 255),
+                              ),
+                              child: const Text('GUARDAR EQUIPO EN BD',
+                                  style: TextStyle(
+                                      height: 4,
+                                      fontSize: 20,
+                                      color: Colors.black)),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -417,8 +538,8 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
               ElevatedButton(
                 onPressed: () {
                   gestorBatalla.comenzarBatalla();
-                  String equipoGanador = 
-                          "Ha ganado el equipo de ${gestorBatalla.ganador() == 1 ? currentUser : currentUser2}: ${gestorBatalla.ganador()}  \n";
+                  String equipoGanador =
+                      "Ha ganado el equipo de ${gestorBatalla.ganador() == 1 ? currentUser : currentUser2}: ${gestorBatalla.ganador()}  \n";
                   String log = gestorBatalla.getRegistro();
                   _imprimirResultadoBatalla(log, equipoGanador);
                 },
@@ -429,7 +550,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                         color: Colors.black,
                         fontWeight: FontWeight.bold)),
               ),
-              
             ],
           ),
         ),
@@ -438,9 +558,9 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
   }
 
 /////////////////////////////////////////////////////////////////////////////////////
-void _cargarEquiposIniciales() async {
+  void _cargarEquiposIniciales() async {
     try {
-      await gestorBatalla.cargarMilitares1("ruben");
+      await gestorBatalla.cargarMilitares1("Jose");
       setState(() {
         gestorBatalla.jefe1.militares = gestorBatalla.jefe1.militares;
       });
@@ -528,19 +648,18 @@ void _cargarEquiposIniciales() async {
     return seleccionado;
   }
 
-
   Future<Militar?> _mostrarMilitares(int numEquipo) async {
     List<Militar> militares;
     numEquipo == 1
-        ? militares = gestorBatalla.getMilitares1() //MODIFICAR OBTENER TODOS LOS MILITARES, NO SOLO OFICIALES
+        ? militares = gestorBatalla
+            .getMilitares1() //MODIFICAR OBTENER TODOS LOS MILITARES, NO SOLO OFICIALES
         : militares = gestorBatalla.getMilitares2();
 
     final seleccionado = await showDialog<Militar?>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
-              'Militares del equipo.'),
+          title: const Text('Militares del equipo.'),
           content: Container(
             width: double.maxFinite,
             child: ListView.builder(
