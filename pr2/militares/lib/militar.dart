@@ -7,7 +7,7 @@ abstract class Militar {
   Ataque ataque;
   String? usuario;
 
-  Militar(this.nombre, this.oficial, this.vida, this.ataque);
+  Militar(this.nombre, this.oficial, this.vida, this.ataque, {this.usuario});
 
   String atacar(Militar m) {
     ataque.atacar(m);
@@ -35,18 +35,15 @@ abstract class Militar {
 
   factory Militar.fromJson(Map<String, dynamic> json){
     if(json['oficial']){
-      Oficial oficial = Oficial(json['nombre']);
-      oficial.usuario = json['usuario'];
-      List<Militar> militares = [];
-      // for(Map<String, dynamic> m in json['militares']){
-      //   militares.add(Militar.fromJson(m));
-      // }
-      oficial.militares = militares;
-      return oficial;
+      return Oficial(
+        json['nombre'] as String,
+        usuario: json['usuario'],
+      );
     }else{
-      Raso raso = Raso(json['nombre']);
-      raso.usuario = json['usuario'];
-      return raso;
+      return Oficial(
+        json['nombre'] as String,
+        usuario: json['usuario'],
+      );
     }
   }
 
@@ -61,7 +58,7 @@ abstract class Militar {
 }
 
 class Raso extends Militar {
-  Raso(String nombre)
+  Raso(String nombre, {String? usuario})
       : super(nombre, false, 100.0, AtaqueMaritimo());
 
   @override
@@ -110,7 +107,7 @@ class Raso extends Militar {
 class Oficial extends Militar {
   List<Militar> militares = [];
 
-  Oficial(String nombre)
+  Oficial(String nombre, {String? usuario})
       : super(nombre, true, 150, AtaqueMaritimo());
 
   @override

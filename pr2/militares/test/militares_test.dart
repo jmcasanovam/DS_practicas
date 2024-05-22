@@ -6,17 +6,14 @@ import 'package:militares/ataque.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  test("Test nombrepadre", () {
+  test("Test agregar", () async{
     Gestor gestorBatalla = Gestor();
-    Oficial of1 = Oficial("of12");
-    of1.usuario = "Jose";
-    gestorBatalla.agregar(of1, "Capitan equipo1");
-  //   gestorBatalla.cargarMilitares1("ruben");
-
-  //   print("Numero de oficiales cargados: ${gestorBatalla.misMilitares().length}");
-  //  print(gestorBatalla.getMilitares1());
-
-
+    Oficial of1 = Oficial("of1");
+    of1.usuario = "Ruben";
+    await gestorBatalla.agregar(of1, "Capitan equipo1");
+    Oficial of2 = Oficial("of100");
+    of2.usuario = "Ruben";
+    await gestorBatalla.agregar(of2, "Capitan equipo1");
 
     for (Militar m in gestorBatalla.getMilitares1()) {
       print("Nombre: ${m.nombre}");
@@ -24,7 +21,36 @@ void main() {
 
     print("Numero de oficiales: ${gestorBatalla.getMilitares1().length}");
     print(gestorBatalla.getMilitares1());
+    print("Numero de militares en vector MisMilitares: ${gestorBatalla.misMilitares.length}");
+    print(gestorBatalla.misMilitares);
+    
   });
+
+  // test("Test Delete", () {
+  //   Gestor gestorBatalla = Gestor();
+    
+  //   gestorBatalla.eliminar("of24", "Jose");
+
+
+  // });
+
+  // test("Test Modificar", () {
+  //   Gestor gestorBatalla = Gestor();
+
+  //   gestorBatalla.modificar("of11", "Jose", "Capitan equipo1");
+  // });
+
+  
+
+  // test("Test cargarmilitar", () {
+  //   Gestor gestorBatalla = Gestor();
+
+  //   gestorBatalla.cargarMilitares1("Jose");
+
+  //   print("Numero de militares en vector MisMilitares: ${gestorBatalla.misMilitares.length}");
+  //   print(gestorBatalla.misMilitares);
+    
+  // });
 
   /////////// TESTS DEL GRUPO DE CLASES DEL MODELO ///////////
 //   group('GRUPO TESTS DEL MODELO', () {
