@@ -169,11 +169,11 @@ class Gestor {
     m.nombre = nombre;
   }
 
-  void eliminarMilitar1(Militar m) {
+  void eliminarMilitar1(String nombre) {
     bool encontrado = false;
     for (Militar oficial in getOficiales1()) {
       for (Militar hijo in (oficial as Oficial).militares) {
-        if (hijo == m) {
+        if (hijo.nombre == nombre) {
           hijo.eliminarHijos();
           oficial.militares.remove(hijo);
           encontrado = true;
@@ -184,11 +184,11 @@ class Gestor {
     }
   }
 
-  void eliminarMilitar2(Militar m) {
+  void eliminarMilitar2(String nombre) {
     bool encontrado = false;
     for (Militar oficial in getOficiales2()) {
       for (Militar hijo in (oficial as Oficial).militares) {
-        if (hijo == m) {
+        if (hijo.nombre == nombre) {
           hijo.eliminarHijos();
           oficial.militares.remove(hijo);
           encontrado = true;
@@ -311,30 +311,53 @@ class Gestor {
     }
   }
 
-  Future<void> eliminar(String nombre, String usuario) async {
+
+
+  Future<void> eliminar1(String nombre, String usuario) async {
     final response = await http.delete(
       Uri.parse('$apiUrl/militars?usuario=$usuario&nombre=$nombre'),
 
     );
     if (response.statusCode == 200) {
-      misMilitares.removeWhere((t) => t.nombre == nombre);
+      eliminarMilitar1(nombre);
+
+      //Eliminar hijos de la base de datos
+      final response2 = await http.delete(
+        Uri.parse('$apiUrl/militars?usuario=$usuario&nombre_superior=$nombre'),
+      );
+
+    } else {
+      throw Exception('Failed to delete task');
+    }
+  }
+  
+  Future<void> eliminar2(String nombre, String usuario) async {
+    final response = await http.delete(
+      Uri.parse('$apiUrl/militars?usuario=$usuario&nombre=$nombre'),
+    );
+    if (response.statusCode == 200) {
+      eliminarMilitar2(nombre);
     } else {
       throw Exception('Failed to delete task');
     }
   }
 
-  Future<void> actualizarMilitar(
-      Militar militar, Militar nuevoMilitar, String usuario) async {
+  Future<void> actualizarMilitar( String nombre, String nombreNuevo, String nombrePadre, String usuario) async {
+    
     final response = await http.patch(
-      Uri.parse('$apiUrl/militars?usuario=$usuario&nombre=$militar'),
+      Uri.parse('$apiUrl/militars?usuario=$usuario&nombre=$nombre'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(nuevoMilitar.toJson("")),
+      body: jsonEncode({
+        'nombre' : nombreNuevo,
+        'nombre_superior': nombrePadre,
+      }),
     );
 
     if (response.statusCode == 200) {
-      // habria que actualizar el militar en la lista
+      Militar m = encontrarMilitarPorNombre(jefe1, nombre)!;
+      m.nombre = nombreNuevo;
     } else {
       throw Exception('Failed to update task');
     }

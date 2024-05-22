@@ -6,31 +6,35 @@ import 'package:militares/ataque.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  test("Test agregar", () async{
+  // test("Test agregar", () async{
+  //   Gestor gestorBatalla = Gestor();
+  //   Raso raso2 = Raso("raso2");
+  //   Raso raso3 = Raso("raso3");
+
+  //   raso2.usuario = "David";
+  //   raso3.usuario = "David";
+
+  //   await gestorBatalla.agregar1(raso2, "of2");
+  //   await gestorBatalla.agregar1(raso3, "of2");
+
+
+
+  //   // for (Militar m in gestorBatalla.getMilitares1()) {
+  //   //   print("Nombre: ${m.nombre}");
+  //   // }
+
+  // });
+
+  test("Test Delete", ()  async {
     Gestor gestorBatalla = Gestor();
-    Raso raso2 = Raso("raso2");
-    Raso raso3 = Raso("raso3");
 
-    raso2.usuario = "David";
-    raso3.usuario = "David";
-
-    await gestorBatalla.agregar1(raso2, "of2");
-    await gestorBatalla.agregar1(raso3, "of2");
+    await gestorBatalla.cargarMilitares1("David");
 
 
+    print(gestorBatalla.jefe1.imprimirJerarquia(0));
 
-    // for (Militar m in gestorBatalla.getMilitares1()) {
-    //   print("Nombre: ${m.nombre}");
-    // }
 
   });
-
-  // test("Test Delete", () async {
-  //   Gestor gestorBatalla = Gestor();
-  //   await gestorBatalla.eliminar("of1", "ahsd");
-
-  //   await gestorBatalla.eliminar("of2", "ahsbd");
-  // });
 
   // test("Test Modificar", () {
   //   Gestor gestorBatalla = Gestor();

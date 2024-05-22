@@ -231,35 +231,9 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                               onPressed: () {
                                 // Mostrar la lista de militares
                                 setState(() {
-                                  _superiorSeleccionado = _mostrarMilitares(
-                                      1); //CAMBIAR IMPLEMENTACIÓN
+                                  _superiorSeleccionado = _mostrarMilitares(1); //CAMBIAR IMPLEMENTACIÓN
                                   _superiorSeleccionado!.then((value) {
-                                    gestorBatalla
-                                        .encontrarMilitarPorNombre(
-                                            gestorBatalla.jefe1, value!.nombre)!
-                                        .nombre = _nombreController.text;
-                                    _superiorController.text =
-                                        _nombreController.text = '';
-                                    print(
-                                        gestorBatalla.encontrarMilitarPorNombre(
-                                            gestorBatalla.jefe1, value.nombre));
-                                    if (gestorBatalla
-                                            .encontrarMilitarPorNombre(
-                                                gestorBatalla.jefe1,
-                                                value.nombre)!
-                                            .oficial ==
-                                        false) {
-                                      print(gestorBatalla
-                                          .encontrarMilitarPorNombre(
-                                              gestorBatalla.jefe1,
-                                              value.nombre));
-                                      gestorBatalla.convertirAOficial1(
-                                          gestorBatalla
-                                              .encontrarMilitarPorNombre(
-                                                  gestorBatalla.jefe1,
-                                                  value.nombre) as Raso);
-                                      value?.nombre ?? '';
-                                    }
+                                    funcionActualizar(1, value);
                                   });
                                 });
                               },
@@ -281,8 +255,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                 setState(() {
                                   _superiorSeleccionado = _mostrarMilitares(1);
                                   _superiorSeleccionado!.then((value) {
-                                    gestorBatalla
-                                        .eliminarMilitar1(value as Militar);
+                                    gestorBatalla.eliminar1(value!.nombre, currentUser);
                                     _superiorController2.text = '';
                                   });
                                 });
@@ -301,7 +274,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                             ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  //FUNCIONALIDAD
+                                  
                                 });
                               },
                               style: ElevatedButton.styleFrom(
@@ -467,11 +440,9 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                               onPressed: () {
                                 // Mostrar la lista de militares
                                 setState(() {
-                                  _superiorSeleccionado2 = _mostrarMilitares(
-                                      2); //CAMBIAR IMPLEMENTACIÓN
+                                  _superiorSeleccionado2 = _mostrarMilitares(2); //CAMBIAR IMPLEMENTACIÓN
                                   _superiorSeleccionado2!.then((value) {
-                                    _superiorController2.text =
-                                        value?.nombre ?? '';
+                                    funcionActualizar(2, value);
                                   });
                                 });
                               },
@@ -493,8 +464,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                 setState(() {
                                   _superiorSeleccionado2 = _mostrarMilitares(2);
                                   _superiorSeleccionado2!.then((value) {
-                                    gestorBatalla
-                                        .eliminarMilitar2(value as Militar);
+                                    gestorBatalla.eliminar2(value!.nombre, currentUser2);
                                     _superiorController2.text = '';
                                   });
                                 });
@@ -558,6 +528,53 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
   }
 
 /////////////////////////////////////////////////////////////////////////////////////
+  
+  void funcionActualizar(int equipo, Militar? value){
+    if(equipo==1){
+      String padre="";
+      bool encontrado=false;
+      for (Militar oficial in gestorBatalla.getOficiales1()) {
+        for (Militar hijo in (oficial as Oficial).militares) {
+          if (hijo.nombre == value!.nombre) {
+            padre=oficial.nombre;
+            encontrado = true;
+            break;
+          }
+        }
+        if (encontrado) break;
+      }
+      gestorBatalla.actualizarMilitar(value!.nombre, _nombreController.text, padre, currentUser);
+      _nombreController.text = '';
+      if( value is Oficial ){
+        for(Militar m in value.militares){
+          gestorBatalla.actualizarMilitar(m.nombre, m.nombre, _nombreController.text, currentUser);
+        }
+      }
+    }
+    else if(equipo==2){
+      String padre="";
+      bool encontrado=false;
+      for (Militar oficial in gestorBatalla.getOficiales2()) {
+        for (Militar hijo in (oficial as Oficial).militares) {
+          if (hijo.nombre == value!.nombre) {
+            padre=oficial.nombre;
+            encontrado = true;
+            break;
+          }
+        }
+        if (encontrado) break;
+      }
+      gestorBatalla.actualizarMilitar(value!.nombre, _nombreController2.text, padre, currentUser2);
+      _nombreController2.text = '';
+      if( value is Oficial ){
+        for(Militar m in value.militares){
+          gestorBatalla.actualizarMilitar(m.nombre, m.nombre, _nombreController2.text, currentUser2);
+        }
+      }
+    }
+
+  }
+
   void _cargarEquiposIniciales() async {
     try {
       await gestorBatalla.cargarMilitares1("Jose");
@@ -577,9 +594,15 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
           _superiorSeleccionado!.then((value) {
             if (value != null) {
               if (esOficial) {
-                value.agregar(Oficial(nombre));
+                // value.agregar(Oficial(nombre));
+                Oficial of = Oficial(nombre);
+                of.usuario = currentUser;
+                gestorBatalla.agregar1(of, value.nombre);
               } else {
-                value.agregar(Raso(nombre));
+                // value.agregar(Raso(nombre));
+                Raso ra = Raso(nombre);
+                ra.usuario = currentUser;
+                gestorBatalla.agregar1(ra, value.nombre);
               }
             }
           });
@@ -597,9 +620,15 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
           _superiorSeleccionado2!.then((value) {
             if (value != null) {
               if (esOficial) {
-                value.agregar(Oficial(nombre));
+                // value.agregar(Oficial(nombre));
+                Oficial of = Oficial(nombre);
+                of.usuario = currentUser2;
+                gestorBatalla.agregar2(of, value.nombre);
               } else {
-                value.agregar(Raso(nombre));
+                // value.agregar(Raso(nombre));
+                Raso ra = Raso(nombre);
+                ra.usuario = currentUser2;
+                gestorBatalla.agregar2(ra, value.nombre);
               }
             }
           });
