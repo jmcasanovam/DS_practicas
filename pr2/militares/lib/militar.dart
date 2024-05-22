@@ -5,6 +5,7 @@ abstract class Militar {
   bool oficial;
   double vida;
   Ataque ataque;
+  String? usuario;
 
   Militar(this.nombre, this.oficial, this.vida, this.ataque);
 
@@ -32,6 +33,31 @@ abstract class Militar {
 
   List<Militar> getRasos();
 
+  factory Militar.fromJson(Map<String, dynamic> json){
+    if(json['oficial']){
+      Oficial oficial = Oficial(json['nombre']);
+      oficial.usuario = json['usuario'];
+      List<Militar> militares = [];
+      // for(Map<String, dynamic> m in json['militares']){
+      //   militares.add(Militar.fromJson(m));
+      // }
+      oficial.militares = militares;
+      return oficial;
+    }else{
+      Raso raso = Raso(json['nombre']);
+      raso.usuario = json['usuario'];
+      return raso;
+    }
+  }
+
+  Map<String, dynamic> toJson(String padre){
+    return {
+      'nombre': nombre,
+      'oficial': oficial,
+      'usuario': usuario,
+      'nombre_superior': padre
+    };
+  }
 }
 
 class Raso extends Militar {
@@ -77,6 +103,8 @@ class Raso extends Militar {
   List<Militar> getRasos() {
     return [this];
   }
+
+  
 }
 
 class Oficial extends Militar {

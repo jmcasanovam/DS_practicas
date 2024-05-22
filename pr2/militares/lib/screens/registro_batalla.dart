@@ -441,6 +441,17 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
 /////////////////////////////////////////////////////////////////////////////////////
 
 
+  void _cargarEquiposIniciales() async {
+    try {
+      await gestorBatalla.cargarMilitares1("ruben");
+      setState(() {
+        gestorBatalla.jefe1.militares = gestorBatalla.jefe1.militares;
+      });
+    } catch (e) {
+      print("Error loading tasks: $e");
+    }
+  }
+
   void _guardarMilitar(String nombre, bool esOficial, int numEquipo) {
     if (numEquipo == 1) {
       // Guardar el militar en la lista
