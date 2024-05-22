@@ -39,7 +39,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
   String currentUser2 = "Álvaro";
   List<String> users = ["Álvaro", "Rubén", "David", "Jose"];
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -206,12 +205,12 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                           SeparacionInferior(),
                           ElevatedButton(
                             onPressed: () {
-                              // Mostrar la lista de militares
+                              // Mostrar la lista de militares y ELIMINA un militar
                               setState(() {
-                                _superiorSeleccionado = _mostrarMilitares(1); //CAMBIAR IMPLEMENTACIÓN
+                                _superiorSeleccionado = _mostrarMilitares(1); 
                                 _superiorSeleccionado!.then((value) {
-                                  _superiorController.text =
-                                      value?.nombre ?? '';
+                                  gestorBatalla.eliminarMilitar1(value as Militar);
+                                  _superiorController2.text = '';
                                 });
                               });
                             },
@@ -386,12 +385,12 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                           SeparacionInferior(),
                           ElevatedButton(
                             onPressed: () {
-                              // Mostrar la lista de militares
+                              // Mostrar la lista de militares y ELIMINA un militar
                               setState(() {
-                                _superiorSeleccionado2 = _mostrarMilitares(2); //CAMBIAR IMPLEMENTACIÓN
+                                _superiorSeleccionado2 = _mostrarMilitares(2); 
                                 _superiorSeleccionado2!.then((value) {
-                                  _superiorController2.text =
-                                      value?.nombre ?? '';
+                                  gestorBatalla.eliminarMilitar2(value as Militar);
+                                  _superiorController2.text = '';
                                 });
                               });
                             },
@@ -439,9 +438,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
   }
 
 /////////////////////////////////////////////////////////////////////////////////////
-
-
-  void _cargarEquiposIniciales() async {
+void _cargarEquiposIniciales() async {
     try {
       await gestorBatalla.cargarMilitares1("ruben");
       setState(() {
@@ -531,12 +528,12 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
     return seleccionado;
   }
 
-  
+
   Future<Militar?> _mostrarMilitares(int numEquipo) async {
     List<Militar> militares;
     numEquipo == 1
-        ? militares = gestorBatalla.getOficiales1() //MODIFICAR OBTENER TODOS LOS MILITARES, NO SOLO OFICIALES
-        : militares = gestorBatalla.getOficiales2();
+        ? militares = gestorBatalla.getMilitares1() //MODIFICAR OBTENER TODOS LOS MILITARES, NO SOLO OFICIALES
+        : militares = gestorBatalla.getMilitares2();
 
     final seleccionado = await showDialog<Militar?>(
       context: context,
