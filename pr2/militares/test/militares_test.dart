@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 void main() {
   test("Test nombrepadre", () {
     Gestor gestorBatalla = Gestor();
-    Oficial of1 = Oficial("of10");
+    Oficial of1 = Oficial("of12");
     of1.usuario = "Jose";
     gestorBatalla.agregar(of1, "Capitan equipo1");
   //   gestorBatalla.cargarMilitares1("ruben");
