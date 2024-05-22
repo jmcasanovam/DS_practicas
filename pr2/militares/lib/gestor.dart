@@ -203,14 +203,8 @@ class Gestor {
     final response = await http.get(Uri.parse('$apiUrl?usuario=$usuario'));
     if (response.statusCode == 200) {
       List<dynamic> militaresJson = json.decode(response.body);
-
       misMilitares.clear();
-      misMilitares
-          .addAll(militaresJson.map((json) => Militar.fromJson(json)).toList());
-      misMilitares = misMilitares;
-      misMilitares.add(Raso("Lucas"));
-      misMilitares = misMilitares;
-      print(misMilitares);
+      misMilitares.addAll(militaresJson.map((json) => Militar.fromJson(json)).toList());
     } else {
       throw Exception('Failed to load militars');
     }

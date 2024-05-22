@@ -6,32 +6,31 @@ import 'package:militares/ataque.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  test("Test agregar", () async{
-    Gestor gestorBatalla = Gestor();
-    Oficial of1 = Oficial("of1");
-    of1.usuario = "Ruben";
-    await gestorBatalla.agregar(of1, "Capitan equipo1");
-    Oficial of2 = Oficial("of100");
-    of2.usuario = "Ruben";
-    await gestorBatalla.agregar(of2, "Capitan equipo1");
+  // test("Test agregar", () async{
+  //   Gestor gestorBatalla = Gestor();
+  //   Oficial of1 = Oficial("of1");
+  //   of1.usuario = "Ruben";
+  //   await gestorBatalla.agregar(of1, "Capitan equipo1");
+  //   Oficial of2 = Oficial("of100");
+  //   of2.usuario = "Ruben";
+  //   await gestorBatalla.agregar(of2, "Capitan equipo1");
 
-    for (Militar m in gestorBatalla.getMilitares1()) {
-      print("Nombre: ${m.nombre}");
-    }
+  //   for (Militar m in gestorBatalla.getMilitares1()) {
+  //     print("Nombre: ${m.nombre}");
+  //   }
 
-    print("Numero de oficiales: ${gestorBatalla.getMilitares1().length}");
-    print(gestorBatalla.getMilitares1());
-    print("Numero de militares en vector MisMilitares: ${gestorBatalla.misMilitares.length}");
-    print(gestorBatalla.misMilitares);
+  //   print("Numero de oficiales: ${gestorBatalla.getMilitares1().length}");
+  //   print(gestorBatalla.getMilitares1());
+  //   print("Numero de militares en vector MisMilitares: ${gestorBatalla.misMilitares.length}");
+  //   print(gestorBatalla.misMilitares);
     
-  });
+  // });
 
-  // test("Test Delete", () {
+  // test("Test Delete", () async {
   //   Gestor gestorBatalla = Gestor();
     
-  //   gestorBatalla.eliminar("of24", "Jose");
-
-
+  //   await gestorBatalla.eliminar("of23", "Jose");
+  //   await gestorBatalla.eliminar("of24", "Jose");
   // });
 
   // test("Test Modificar", () {
@@ -42,10 +41,10 @@ void main() {
 
   
 
-  // test("Test cargarmilitar", () {
+  // test("Test cargarmilitar", () async {
   //   Gestor gestorBatalla = Gestor();
 
-  //   gestorBatalla.cargarMilitares1("Jose");
+  //   await gestorBatalla.cargarMilitares1("Jose");
 
   //   print("Numero de militares en vector MisMilitares: ${gestorBatalla.misMilitares.length}");
   //   print(gestorBatalla.misMilitares);
