@@ -28,9 +28,9 @@ void main() {
   test("Test Delete", ()  async {
     Gestor gestorBatalla = Gestor();
 
-    await gestorBatalla.cargarMilitares1("David");
+    await gestorBatalla.cargarMilitares1("Ruben");
 
-
+    
 
     print(gestorBatalla.jefe1.imprimirJerarquia(0));
 
