@@ -6,38 +6,35 @@ import 'package:militares/ataque.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  test("Test cargar, agregar, actualizar y delete", () async {
-    Gestor gestorBatalla = Gestor();
-    Oficial of1 = Oficial("oficial1");
-    Raso raso1 = Raso("raso1");
-    String nombreusuario = "usuarioEjemplo7";
+  group('GRUPO TESTS DE LA BD RoR', () {
+    test("Comprobar cargar, agregar, actualizar y delete", () async {
+      Gestor gestorBatalla = Gestor();
+      Oficial of1 = Oficial("oficial1");
+      Raso raso1 = Raso("raso1");
+      String nombreusuario = "usuarioEjemplo7";
 
-    await gestorBatalla.cargarMilitares1(nombreusuario);
+      await gestorBatalla.cargarMilitares1(nombreusuario);
 
-    of1.usuario = nombreusuario;
-    raso1.usuario = nombreusuario;
+      of1.usuario = nombreusuario;
+      raso1.usuario = nombreusuario;
 
-    await gestorBatalla.agregar1(of1, "Capitan equipo");
-    await gestorBatalla.agregar1(raso1, "oficial1");
+      await gestorBatalla.agregar1(of1, "Capitan equipo");
+      await gestorBatalla.agregar1(raso1, "oficial1");
 
-    await gestorBatalla.funcionActualizar(1, raso1, "raso2", nombreusuario);
+      await gestorBatalla.funcionActualizar(1, raso1, "raso2", nombreusuario);
 
-    await gestorBatalla.cargarMilitares2(nombreusuario);
-   
+      await gestorBatalla.cargarMilitares2(nombreusuario);
 
-    expect(gestorBatalla.getMilitares2()[2].nombre, "raso2");
+      expect(gestorBatalla.getMilitares2()[2].nombre, "raso2");
 
-    await gestorBatalla.eliminar1("oficial1", nombreusuario);
-    await gestorBatalla.eliminar1("raso2", nombreusuario);
+      await gestorBatalla.eliminar1("oficial1", nombreusuario);
+      await gestorBatalla.eliminar1("raso2", nombreusuario);
 
-    await gestorBatalla.cargarMilitares1(nombreusuario);
+      await gestorBatalla.cargarMilitares1(nombreusuario);
 
-    expect(gestorBatalla.getMilitares1().length, 1);
+      expect(gestorBatalla.getMilitares1().length, 1);
+    });
   });
-
-  
-
-
 
   /////////// TESTS DEL GRUPO DE CLASES DEL MODELO ///////////
   group('GRUPO TESTS DEL MODELO', () {
@@ -312,8 +309,8 @@ Oficial1
     });
   });
 
-//   /////////// TESTS DEL GRUPO DE CLASES DE LA VISTA ///////////
-/*   group("GRUPO TESTS DE LA VISTA", () {
+  /////////// TESTS DEL GRUPO DE CLASES DE LA VISTA ///////////
+  group("GRUPO TESTS DE LA VISTA", () {
     // clase RegistroBatalla
     testWidgets('Interfaz de usuario', (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(home: RegistroBatalla()));
@@ -330,13 +327,14 @@ Oficial1
       expect(find.text(' COMENZAR BATALLA '), findsOneWidget);
 
       // Simular la interacción del usuario: tocar el botón "Seleccionar oficial superior"
-/*       await tester.tap(find.text('Seleccionar oficial superior (1)').first, warnIfMissed: false);
+      await tester.tap(find.text('Seleccionar oficial superior (1)').first,
+          warnIfMissed: false);
       await tester.pump(); // Esperar a los cambios en la interfaz
 
       // Simular la interacción del usuario: tocar el botón " COMENZAR BATALLA "
       await tester.tap(find.text(' COMENZAR BATALLA '), warnIfMissed: false);
-      await tester.pump(); // Esperar a los cambios en la interfaz */
-/*       expect(find.text('***** RESULTADO DE LA BATALLA *****'), findsOneWidget);
- */    });
-  }); */
+      await tester.pump(); // Esperar a los cambios en la interfaz
+      expect(find.text('***** RESULTADO DE LA BATALLA *****'), findsOneWidget);
+    });
+  });
 }

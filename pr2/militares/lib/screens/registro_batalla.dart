@@ -6,7 +6,6 @@ import 'package:militares/widgets/botonJerarquia.dart';
 import 'package:militares/widgets/separacionInferior.dart';
 import 'package:militares/widgets/subtituloEquipo.dart';
 import '../widgets/titulo.dart';
-import 'dart:math';
 
 class RegistroBatalla extends StatefulWidget {
   const RegistroBatalla({super.key});
@@ -124,6 +123,7 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                 width: 30,
                               ),
                               Expanded(
+                                flex: 1,
                                 child: DropdownButton<String>(
                                   value: currentUser,
                                   icon: const Icon(Icons.face),
