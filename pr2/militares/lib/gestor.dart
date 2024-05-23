@@ -382,4 +382,53 @@ class Gestor {
     }
   }
 
+  
+  // void funcionActualizar(int equipo, Militar? value, String nombrenuevo, String usurario) async{
+  //   if(equipo==1){
+  //     String padre="";
+  //     bool encontrado=false;
+  //     for (Militar oficial in getOficiales1()) {
+  //       for (Militar hijo in (oficial as Oficial).militares) {
+  //         if (hijo.nombre == value!.nombre) {
+  //           padre=oficial.nombre;
+  //           encontrado = true;
+  //           break;
+  //         }
+  //       }
+  //       if (encontrado) break;
+  //     }
+  //     await actualizarMilitar1(value!.nombre, nombrenuevo, padre, usurario);
+  //     _nombreController.text = '';
+  //     if( value is Oficial ){
+  //       for(Militar m in value.militares){
+  //         await gestorBatalla.actualizarMilitar1(m.nombre, m.nombre, _nombreController.text, currentUser);
+  //       }
+        
+  //     }
+      
+  //   }
+  //   else if(equipo==2){
+  //     String padre="";
+  //     bool encontrado=false;
+  //     for (Militar oficial in gestorBatalla.getOficiales2()) {
+  //       for (Militar hijo in (oficial as Oficial).militares) {
+  //         if (hijo.nombre == value!.nombre) {
+  //           padre=oficial.nombre;
+  //           encontrado = true;
+  //           break;
+  //         }
+  //       }
+  //       if (encontrado) break;
+  //     }
+  //     gestorBatalla.actualizarMilitar2(value!.nombre, _nombreController2.text, padre, currentUser2);
+  //     _nombreController2.text = '';
+  //     if( value is Oficial ){
+  //       for(Militar m in value.militares){
+  //         gestorBatalla.actualizarMilitar2(m.nombre, m.nombre, _nombreController2.text, currentUser2);
+  //       }
+  //     }
+  //   }
+
+  // }
+
 }

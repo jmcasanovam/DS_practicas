@@ -270,23 +270,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                       fontSize: 20,
                                       color: Colors.black)),
                             ),
-                            SeparacionInferior(),
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 66, 164, 255),
-                              ),
-                              child: const Text('GUARDAR EQUIPO EN BD',
-                                  style: TextStyle(
-                                      height: 4,
-                                      fontSize: 20,
-                                      color: Colors.black)),
-                            ),
                           ],
                         ),
                       ),
@@ -338,7 +321,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                   onChanged: (String? newValue) {
                                     setState((){
                                       currentUser2 = newValue!;
-                                      /*  _cargarEjercitoDelUsuario(currentUser); */
                                       _cargarEquipo2(currentUser2);
                                     });
                                   },
@@ -479,23 +461,6 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                       fontSize: 20,
                                       color: Colors.black)),
                             ),
-                            SeparacionInferior(),
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  //FUNCIONALIDAD
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 66, 164, 255),
-                              ),
-                              child: const Text('GUARDAR EQUIPO EN BD',
-                                  style: TextStyle(
-                                      height: 4,
-                                      fontSize: 20,
-                                      color: Colors.black)),
-                            ),
                           ],
                         ),
                       ),
@@ -544,14 +509,13 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
         if (encontrado) break;
       }
       await gestorBatalla.actualizarMilitar1(value!.nombre, _nombreController.text, padre, currentUser);
-      _nombreController.text = '';
       if( value is Oficial ){
         for(Militar m in value.militares){
           await gestorBatalla.actualizarMilitar1(m.nombre, m.nombre, _nombreController.text, currentUser);
         }
         
       }
-      
+      _nombreController.text = '';
     }
     else if(equipo==2){
       String padre="";
@@ -567,12 +531,12 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
         if (encontrado) break;
       }
       gestorBatalla.actualizarMilitar2(value!.nombre, _nombreController2.text, padre, currentUser2);
-      _nombreController2.text = '';
       if( value is Oficial ){
         for(Militar m in value.militares){
           gestorBatalla.actualizarMilitar2(m.nombre, m.nombre, _nombreController2.text, currentUser2);
         }
       }
+      _nombreController2.text = '';
     }
 
   }

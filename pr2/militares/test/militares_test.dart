@@ -6,139 +6,123 @@ import 'package:militares/ataque.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  // test("Test agregar", () async{
-  //   Gestor gestorBatalla = Gestor();
-  //   Raso raso2 = Raso("raso2");
-  //   Raso raso3 = Raso("raso3");
-
-  //   raso2.usuario = "David";
-  //   raso3.usuario = "David";
-
-  //   await gestorBatalla.agregar1(raso2, "of2");
-  //   await gestorBatalla.agregar1(raso3, "of2");
-
-
-
-  //   // for (Militar m in gestorBatalla.getMilitares1()) {
-  //   //   print("Nombre: ${m.nombre}");
-  //   // }
-
-  // });
-
-  test("Test Delete", ()  async {
+  test("Test cargar, agregar y delete", () async {
     Gestor gestorBatalla = Gestor();
+    Oficial of1 = Oficial("oficial1");
+    Raso raso1 = Raso("raso1");
+    String nombre = "usuarioEjemplo";
 
-    await gestorBatalla.cargarMilitares1("Ruben");
+    await gestorBatalla.cargarMilitares1(nombre);
 
-    
+    of1.usuario = nombre;
+    raso1.usuario = nombre;
 
-    print(gestorBatalla.jefe1.imprimirJerarquia(0));
+    await gestorBatalla.agregar1(of1, "Capitan equipo");
+    await gestorBatalla.agregar1(raso1, "oficial1");
 
+    await gestorBatalla.cargarMilitares2(nombre);
 
+    expect(gestorBatalla.getMilitares2().length, 3);
+
+    await gestorBatalla.eliminar1("oficial1", nombre);
+    await gestorBatalla.eliminar1("raso1", nombre);
+
+    await gestorBatalla.cargarMilitares1(nombre);
+
+    expect(gestorBatalla.getMilitares1().length, 1);
   });
 
-  // test("Test Modificar", () {
-  //   Gestor gestorBatalla = Gestor();
+  
 
-  //   gestorBatalla.modificar("of11", "Jose", "Capitan equipo1");
-  // });
 
-  // test("Test cargarmilitar", () async {
-  //   Gestor gestorBatalla = Gestor();
-
-  //   await gestorBatalla.cargarMilitares2("Jose");
-
-  //   // print("Numero de militares en vector MisMilitares: ${gestorBatalla.misMilitares.length}");
-  //   // print(gestorBatalla.misMilitares);
-  // });
 
   /////////// TESTS DEL GRUPO DE CLASES DEL MODELO ///////////
-//   group('GRUPO TESTS DEL MODELO', () {
-//     //  clase Militar, Oficial, Raso y Ataque
-//     test('Incrementar Array Militares', () {
-//       // creamos un oficial y esperamos que al inicio su array de militares tenga 0 elementos y despues de agregar uno tengo 1
-//       Oficial oficial_base = Oficial("General");
-//       expect(oficial_base.militares.length, 0);
-//       Raso raso = Raso("Raso");
-//       oficial_base.agregar(raso);
-//       expect(oficial_base.militares.length, 1);
-//     });
+  group('GRUPO TESTS DEL MODELO', () {
+    //  clase Militar, Oficial, Raso y Ataque
+    test('Incrementar Array Militares', () {
+      // creamos un oficial y esperamos que al inicio su array de militares tenga 0 elementos y despues de agregar uno tengo 1
+      Oficial oficial_base = Oficial("General");
+      expect(oficial_base.militares.length, 0);
+      Raso raso = Raso("Raso");
+      oficial_base.agregar(raso);
+      expect(oficial_base.militares.length, 1);
+    });
 
-//     test("Prueba de jerarquia Simple", () {
-//       Raso raso = Raso("Raso");
-//       expect(raso.imprimirJerarquia(0),
-//           "Raso\n"); // la jerarquía debería imprimir únicamente ese Militar
-//     });
+    test("Prueba de jerarquia Simple", () {
+      Raso raso = Raso("Raso");
+      expect(raso.imprimirJerarquia(0),
+          "Raso\n"); // la jerarquía debería imprimir únicamente ese Militar
+    });
 
-//     test("Prueba de getOficiales() para que no se añada el Raso Simple", () {
-//       Oficial oficial = Oficial("Oficial");
-//       Raso raso = Raso("Raso");
-//       oficial.agregar(raso);
-//       expect(oficial.getOficiales().length,
-//           1); // getOficiales() solo devuelve la lista de oficiales, incluyendose a sí mismo, por tanto su tamaño será 1 y no 2 si se incluyera el raso
-//     });
+    test("Prueba de getOficiales() para que no se añada el Raso Simple", () {
+      Oficial oficial = Oficial("Oficial");
+      Raso raso = Raso("Raso");
+      oficial.agregar(raso);
+      expect(oficial.getOficiales().length,
+          1); // getOficiales() solo devuelve la lista de oficiales, incluyendose a sí mismo, por tanto su tamaño será 1 y no 2 si se incluyera el raso
+    });
 
-//     test('Agregar militar a un raso', () {
-//       Raso raso = Raso("Raso1");
-//       Oficial oficial = Oficial("Oficial1");
+    test('Agregar militar a un raso', () {
+      Raso raso = Raso("Raso1");
+      Oficial oficial = Oficial("Oficial1");
 
-//       expect(raso.agregar(oficial),
-//           false); // No se pueden agregar oficiales a un raso
-//     });
+      expect(raso.agregar(oficial),
+          false); // No se pueden agregar oficiales a un raso
+    });
 
-//     late Raso raso1, raso2, raso3, raso4;
-//     late Oficial oficial1, oficial2, oficial3, oficial4;
+    late Raso raso1, raso2, raso3, raso4;
+    late Oficial oficial1, oficial2, oficial3, oficial4;
 
-//     setUp(() {
-//       raso1 = Raso("Raso1");
-//       raso2 = Raso("Raso2");
-//       raso3 = Raso("Raso3");
-//       raso4 = Raso("Raso4");
-//       oficial1 = Oficial("Oficial1");
-//       oficial2 = Oficial("Oficial2");
-//       oficial3 = Oficial("Oficial3");
-//       oficial4 = Oficial("Oficial4");
+    setUp(() {
+      raso1 = Raso("Raso1");
+      raso2 = Raso("Raso2");
+      raso3 = Raso("Raso3");
+      raso4 = Raso("Raso4");
+      oficial1 = Oficial("Oficial1");
+      oficial2 = Oficial("Oficial2");
+      oficial3 = Oficial("Oficial3");
+      oficial4 = Oficial("Oficial4");
 
-//       oficial1.agregar(oficial2);
-//       oficial1.agregar(oficial3);
-//       oficial1.agregar(raso1);
-//       oficial2.agregar(raso2);
-//       oficial2.agregar(raso3);
+      oficial1.agregar(oficial2);
+      oficial1.agregar(oficial3);
+      oficial1.agregar(raso1);
+      oficial2.agregar(raso2);
+      oficial2.agregar(raso3);
 
-//       oficial3.agregar(raso4);
-//       oficial3.agregar(oficial4);
-//     });
+      oficial3.agregar(raso4);
+      oficial3.agregar(oficial4);
+    });
 
-//     test("Prueba de jerarquia Compleja", () {
-//       String salida = """
-// Oficial1
-// |      Oficial2
-// |      |      Raso2
-// |      |      Raso3
-// |      Oficial3
-// |      |      Raso4
-// |      |      Oficial4
-// |      Raso1
-// """;
+    test("Prueba de jerarquia Compleja", () {
+      String salida = """
+Oficial1
+|      Oficial2
+|      |      Raso2
+|      |      Raso3
+|      Oficial3
+|      |      Raso4
+|      |      Oficial4
+|      Raso1
+""";
 
-//       expect(oficial1.imprimirJerarquia(0), salida);
-//     });
+      expect(oficial1.imprimirJerarquia(0), salida);
+    });
 
-//     test("Prueba de getOficiales() para que no se añada el Raso Completa", () {
-//       expect(oficial1.getOficiales().length, 4);
-//     });
+    test("Prueba de getOficiales() para que no se añada el Raso Completa", () {
+      expect(oficial1.getOficiales().length, 4);
+    });
 
-//     test("Prueba de getOficiales() para que se muestre en preorden", () {
-//       List<Militar> oficiales = oficial1.getOficiales();
-//       List<Militar> oficialesEsperados = [
-//         oficial1,
-//         oficial2,
-//         oficial3,
-//         oficial4
-//       ];
-//       expect(oficiales, oficialesEsperados);
-//     });
-//   });
+    test("Prueba de getOficiales() para que se muestre en preorden", () {
+      List<Militar> oficiales = oficial1.getOficiales();
+      List<Militar> oficialesEsperados = [
+        oficial1,
+        oficial2,
+        oficial3,
+        oficial4
+      ];
+      expect(oficiales, oficialesEsperados);
+    });
+  });
 
 //   /////////// TESTS DEL GRUPO DE CLASES DEL CONTROLADOR ///////////
 //   group('GRUPO TESTS DEL CONTROLADOR', () {
@@ -326,31 +310,30 @@ void main() {
 //   });
 
 //   /////////// TESTS DEL GRUPO DE CLASES DE LA VISTA ///////////
-//   group("GRUPO TESTS DE LA VISTA", () {
-//     // clase RegistroBatalla
-//     testWidgets('Interfaz de usuario', (WidgetTester tester) async {
-//       await tester.pumpWidget(MaterialApp(home: RegistroBatalla()));
+/*   group("GRUPO TESTS DE LA VISTA", () {
+    // clase RegistroBatalla
+    testWidgets('Interfaz de usuario', (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: RegistroBatalla()));
 
-//       // Comprobación de widgets de la interfaz
-//       expect(find.text('Nombre del militar'), findsNWidgets(2));
-//       expect(find.text('Superior Seleccionado'), findsNWidgets(2));
-//       expect(find.text('Seleccionar oficial superior (1)'), findsOneWidget);
-//       expect(find.text('Seleccionar oficial superior (2)'), findsOneWidget);
-//       expect(find.text('Oficial'), findsNWidgets(2));
-//       expect(find.text('Raso'), findsNWidgets(2));
-//       expect(find.text('Mostrar jerarquía del Equipo 1'), findsOneWidget);
-//       expect(find.text('Mostrar jerarquía del Equipo 2'), findsOneWidget);
-//       expect(find.text(' COMENZAR BATALLA '), findsOneWidget);
+      // Comprobación de widgets de la interfaz
+      expect(find.text('Nombre del militar'), findsNWidgets(2));
+      expect(find.text('Superior Seleccionado'), findsNWidgets(2));
+      expect(find.text('Seleccionar oficial superior (1)'), findsOneWidget);
+      expect(find.text('Seleccionar oficial superior (2)'), findsOneWidget);
+      expect(find.text('Oficial'), findsNWidgets(2));
+      expect(find.text('Raso'), findsNWidgets(2));
+      expect(find.text('Mostrar jerarquía del Equipo 1'), findsOneWidget);
+      expect(find.text('Mostrar jerarquía del Equipo 2'), findsOneWidget);
+      expect(find.text(' COMENZAR BATALLA '), findsOneWidget);
 
-//       // Simular la interacción del usuario: tocar el botón "Seleccionar oficial superior"
-//       await tester.tap(find.text('Seleccionar oficial superior (1)').first,
-//           warnIfMissed: false);
-//       await tester.pump(); // Esperar a los cambios en la interfaz
+      // Simular la interacción del usuario: tocar el botón "Seleccionar oficial superior"
+/*       await tester.tap(find.text('Seleccionar oficial superior (1)').first, warnIfMissed: false);
+      await tester.pump(); // Esperar a los cambios en la interfaz
 
-//       // Simular la interacción del usuario: tocar el botón " COMENZAR BATALLA "
-//       await tester.tap(find.text(' COMENZAR BATALLA '), warnIfMissed: false);
-//       await tester.pump(); // Esperar a los cambios en la interfaz
-//       expect(find.text('***** RESULTADO DE LA BATALLA *****'), findsOneWidget);
-//     });
-//   });
+      // Simular la interacción del usuario: tocar el botón " COMENZAR BATALLA "
+      await tester.tap(find.text(' COMENZAR BATALLA '), warnIfMissed: false);
+      await tester.pump(); // Esperar a los cambios en la interfaz */
+/*       expect(find.text('***** RESULTADO DE LA BATALLA *****'), findsOneWidget);
+ */    });
+  }); */
 }
