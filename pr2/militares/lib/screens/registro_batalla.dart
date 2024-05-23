@@ -233,7 +233,9 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                 setState(() {
                                   _superiorSeleccionado = _mostrarMilitares(1); //CAMBIAR IMPLEMENTACIÓN
                                   _superiorSeleccionado!.then((value) {
-                                    funcionActualizar(1, value);
+                                    gestorBatalla.funcionActualizar(1, value, _nombreController.text, currentUser);
+                                    _nombreController.text='';
+                                    // funcionActualizar(1, value);
                                   });
                                 });
                               },
@@ -424,7 +426,8 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
                                 setState(() {
                                   _superiorSeleccionado2 = _mostrarMilitares(2); //CAMBIAR IMPLEMENTACIÓN
                                   _superiorSeleccionado2!.then((value) {
-                                    funcionActualizar(2, value);
+                                    gestorBatalla.funcionActualizar(2, value, _nombreController2.text, currentUser2);
+                                    _nombreController2.text = "";
                                   });
                                 });
                               },
@@ -494,52 +497,52 @@ class _RegistroBatallaState extends State<RegistroBatalla> {
 
 /////////////////////////////////////////////////////////////////////////////////////
   
-  void funcionActualizar(int equipo, Militar? value) async{
-    if(equipo==1){
-      String padre="";
-      bool encontrado=false;
-      for (Militar oficial in gestorBatalla.getOficiales1()) {
-        for (Militar hijo in (oficial as Oficial).militares) {
-          if (hijo.nombre == value!.nombre) {
-            padre=oficial.nombre;
-            encontrado = true;
-            break;
-          }
-        }
-        if (encontrado) break;
-      }
-      await gestorBatalla.actualizarMilitar1(value!.nombre, _nombreController.text, padre, currentUser);
-      if( value is Oficial ){
-        for(Militar m in value.militares){
-          await gestorBatalla.actualizarMilitar1(m.nombre, m.nombre, _nombreController.text, currentUser);
-        }
+  // void funcionActualizar(int equipo, Militar? value) async{
+  //   if(equipo==1){
+  //     String padre="";
+  //     bool encontrado=false;
+  //     for (Militar oficial in gestorBatalla.getOficiales1()) {
+  //       for (Militar hijo in (oficial as Oficial).militares) {
+  //         if (hijo.nombre == value!.nombre) {
+  //           padre=oficial.nombre;
+  //           encontrado = true;
+  //           break;
+  //         }
+  //       }
+  //       if (encontrado) break;
+  //     }
+  //     await gestorBatalla.actualizarMilitar1(value!.nombre, _nombreController.text, padre, currentUser);
+  //     if( value is Oficial ){
+  //       for(Militar m in value.militares){
+  //         await gestorBatalla.actualizarMilitar1(m.nombre, m.nombre, _nombreController.text, currentUser);
+  //       }
         
-      }
-      _nombreController.text = '';
-    }
-    else if(equipo==2){
-      String padre="";
-      bool encontrado=false;
-      for (Militar oficial in gestorBatalla.getOficiales2()) {
-        for (Militar hijo in (oficial as Oficial).militares) {
-          if (hijo.nombre == value!.nombre) {
-            padre=oficial.nombre;
-            encontrado = true;
-            break;
-          }
-        }
-        if (encontrado) break;
-      }
-      gestorBatalla.actualizarMilitar2(value!.nombre, _nombreController2.text, padre, currentUser2);
-      if( value is Oficial ){
-        for(Militar m in value.militares){
-          gestorBatalla.actualizarMilitar2(m.nombre, m.nombre, _nombreController2.text, currentUser2);
-        }
-      }
-      _nombreController2.text = '';
-    }
+  //     }
+  //     _nombreController.text = '';
+  //   }
+  //   else if(equipo==2){
+  //     String padre="";
+  //     bool encontrado=false;
+  //     for (Militar oficial in gestorBatalla.getOficiales2()) {
+  //       for (Militar hijo in (oficial as Oficial).militares) {
+  //         if (hijo.nombre == value!.nombre) {
+  //           padre=oficial.nombre;
+  //           encontrado = true;
+  //           break;
+  //         }
+  //       }
+  //       if (encontrado) break;
+  //     }
+  //     gestorBatalla.actualizarMilitar2(value!.nombre, _nombreController2.text, padre, currentUser2);
+  //     if( value is Oficial ){
+  //       for(Militar m in value.militares){
+  //         gestorBatalla.actualizarMilitar2(m.nombre, m.nombre, _nombreController2.text, currentUser2);
+  //       }
+  //     }
+  //     _nombreController2.text = '';
+  //   }
 
-  }
+  // }
 
   void _cargarEquiposIniciales() async {
     try {

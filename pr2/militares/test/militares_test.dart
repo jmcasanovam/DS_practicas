@@ -6,28 +6,31 @@ import 'package:militares/ataque.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  test("Test cargar, agregar y delete", () async {
+  test("Test cargar, agregar, actualizar y delete", () async {
     Gestor gestorBatalla = Gestor();
     Oficial of1 = Oficial("oficial1");
     Raso raso1 = Raso("raso1");
-    String nombre = "usuarioEjemplo";
+    String nombreusuario = "usuarioEjemplo7";
 
-    await gestorBatalla.cargarMilitares1(nombre);
+    await gestorBatalla.cargarMilitares1(nombreusuario);
 
-    of1.usuario = nombre;
-    raso1.usuario = nombre;
+    of1.usuario = nombreusuario;
+    raso1.usuario = nombreusuario;
 
     await gestorBatalla.agregar1(of1, "Capitan equipo");
     await gestorBatalla.agregar1(raso1, "oficial1");
 
-    await gestorBatalla.cargarMilitares2(nombre);
+    await gestorBatalla.funcionActualizar(1, raso1, "raso2", nombreusuario);
 
-    expect(gestorBatalla.getMilitares2().length, 3);
+    await gestorBatalla.cargarMilitares2(nombreusuario);
+   
 
-    await gestorBatalla.eliminar1("oficial1", nombre);
-    await gestorBatalla.eliminar1("raso1", nombre);
+    expect(gestorBatalla.getMilitares2()[2].nombre, "raso2");
 
-    await gestorBatalla.cargarMilitares1(nombre);
+    await gestorBatalla.eliminar1("oficial1", nombreusuario);
+    await gestorBatalla.eliminar1("raso2", nombreusuario);
+
+    await gestorBatalla.cargarMilitares1(nombreusuario);
 
     expect(gestorBatalla.getMilitares1().length, 1);
   });
@@ -125,189 +128,189 @@ Oficial1
   });
 
 //   /////////// TESTS DEL GRUPO DE CLASES DEL CONTROLADOR ///////////
-//   group('GRUPO TESTS DEL CONTROLADOR', () {
-//     // clase Gestor
-//     test(
-//         'Funcion ganador() devuelve uno de los dos equipos al terminar la partida',
-//         () {
-//       Gestor gestor = Gestor();
+  group('GRUPO TESTS DEL CONTROLADOR', () {
+    // clase Gestor
+    test(
+        'Funcion ganador() devuelve uno de los dos equipos al terminar la partida',
+        () {
+      Gestor gestor = Gestor();
 
-//       while (!gestor.partidaFinalizada()) {
-//         gestor.equipo1ataca();
-//         gestor.equipo2ataca();
-//       }
+      while (!gestor.partidaFinalizada()) {
+        gestor.equipo1ataca();
+        gestor.equipo2ataca();
+      }
 
-//       expect(gestor.ganador(), anyOf(1, 2));
-//     });
+      expect(gestor.ganador(), anyOf(1, 2));
+    });
 
-//     test('Funcion ganador() devuelve 0 durante la partida', () {
-//       Gestor gestor = Gestor();
-//       expect(gestor.ganador(), 0);
-//     });
+    test('Funcion ganador() devuelve 0 durante la partida', () {
+      Gestor gestor = Gestor();
+      expect(gestor.ganador(), 0);
+    });
 
-//     test('Comprobar aleatoriedad del equipo que inicia el ataque', () {
-//       int empiezaE1 = 0;
-//       int empiezaE2 = 0;
-//       const int numSimulaciones = 1000;
+    test('Comprobar aleatoriedad del equipo que inicia el ataque', () {
+      int empiezaE1 = 0;
+      int empiezaE2 = 0;
+      const int numSimulaciones = 1000;
 
-//       for (int i = 0; i < numSimulaciones; i++) {
-//         // hacemos 1000 batallas
-//         final gestorBatalla = Gestor();
-//         gestorBatalla.comenzarBatalla();
-//         if (gestorBatalla.empiezaEq1) {
-//           empiezaE1++;
-//         } else {
-//           empiezaE2++;
-//         }
-//       }
+      for (int i = 0; i < numSimulaciones; i++) {
+        // hacemos 1000 batallas
+        final gestorBatalla = Gestor();
+        gestorBatalla.comenzarBatalla();
+        if (gestorBatalla.empiezaEq1) {
+          empiezaE1++;
+        } else {
+          empiezaE2++;
+        }
+      }
 
-//       expect(
-//           empiezaE1,
-//           closeTo(500,
-//               30)); // Si la probabilidad es la misma al hacer 1000 simulaciones cada equipo habrá empezado sobre 500 veces
-//       expect(
-//           empiezaE2,
-//           closeTo(500,
-//               30)); // le damos un margen de 30 arriba y abajo dado que puede variar un poco
-//     });
+      expect(
+          empiezaE1,
+          closeTo(500,
+              30)); // Si la probabilidad es la misma al hacer 1000 simulaciones cada equipo habrá empezado sobre 500 veces
+      expect(
+          empiezaE2,
+          closeTo(500,
+              30)); // le damos un margen de 30 arriba y abajo dado que puede variar un poco
+    });
 
-//     test('Cambio de ataque por turno', () {
-//       Gestor gestorBatalla = Gestor();
-//       gestorBatalla.jefe1.agregar(Oficial("ofi1"));
-//       gestorBatalla.jefe2.agregar(Oficial("Ofi2"));
+    test('Cambio de ataque por turno', () {
+      Gestor gestorBatalla = Gestor();
+      gestorBatalla.jefe1.agregar(Oficial("ofi1"));
+      gestorBatalla.jefe2.agregar(Oficial("Ofi2"));
 
-//       bool todosigual = true;
-//       bool cambiaataque = false;
+      bool todosigual = true;
+      bool cambiaataque = false;
 
-//       int i = 0;
-//       Ataque primero1 =
-//           AtaqueMaritimo(); //Voy a poner esto por defecto para inicializarlo
-//       Ataque primero2 = AtaqueMaritimo();
-//       bool setprimero = false;
-//       while (!gestorBatalla.partidaFinalizada()) {
-//         if (i % 2 == 0) {
-//           gestorBatalla.equipo1setAtaque();
-//           gestorBatalla.equipo1ataca();
+      int i = 0;
+      Ataque primero1 =
+          AtaqueMaritimo(); //Voy a poner esto por defecto para inicializarlo
+      Ataque primero2 = AtaqueMaritimo();
+      bool setprimero = false;
+      while (!gestorBatalla.partidaFinalizada()) {
+        if (i % 2 == 0) {
+          gestorBatalla.equipo1setAtaque();
+          gestorBatalla.equipo1ataca();
 
-//           Ataque a = gestorBatalla.jefe1
-//               .ataque; //Cogemos el ataque del jefe en este turno, para comprobar que el resto del ejercito tiene el mismo
-//           if (!setprimero) {
-//             primero1 = gestorBatalla.jefe1
-//                 .ataque; //Cogemos el ataque que se le pone al ejercito en el primer turno, para comprobar que despues en otros se cambia.
-//             setprimero = true;
-//           }
-//           if (a != primero1 && !cambiaataque)
-//             cambiaataque =
-//                 true; //Si mi ataque en este turno es distinto del que tuve en el primero, ya sabemos que cambia. Si ya ha cambiado no comprobamos más
+          Ataque a = gestorBatalla.jefe1
+              .ataque; //Cogemos el ataque del jefe en este turno, para comprobar que el resto del ejercito tiene el mismo
+          if (!setprimero) {
+            primero1 = gestorBatalla.jefe1
+                .ataque; //Cogemos el ataque que se le pone al ejercito en el primer turno, para comprobar que despues en otros se cambia.
+            setprimero = true;
+          }
+          if (a != primero1 && !cambiaataque)
+            cambiaataque =
+                true; //Si mi ataque en este turno es distinto del que tuve en el primero, ya sabemos que cambia. Si ya ha cambiado no comprobamos más
 
-//           for (Militar m in gestorBatalla.getOficiales1()) {
-//             if (m.ataque != a && todosigual)
-//               todosigual =
-//                   false; //si el ataque no es el mismo que el del jefe, no se actualiza bien. Si ya se ha visto q no es igual en algun momento no comprobamos más
-//           }
-//         } else {
-//           gestorBatalla.equipo2setAtaque();
-//           gestorBatalla.equipo2ataca();
+          for (Militar m in gestorBatalla.getOficiales1()) {
+            if (m.ataque != a && todosigual)
+              todosigual =
+                  false; //si el ataque no es el mismo que el del jefe, no se actualiza bien. Si ya se ha visto q no es igual en algun momento no comprobamos más
+          }
+        } else {
+          gestorBatalla.equipo2setAtaque();
+          gestorBatalla.equipo2ataca();
 
-//           Ataque b = gestorBatalla.jefe2
-//               .ataque; //Cogemos el ataque del jefe en este turno, para comprobar que el resto del ejercito tiene el mismo
-//           if (!setprimero) {
-//             primero2 = gestorBatalla.jefe2
-//                 .ataque; //Cogemos el ataque que se le pone al ejercito en el primer turno, para comprobar que despues en otros se cambia.
-//             setprimero = true;
-//           }
-//           if (b != primero2 && !cambiaataque)
-//             cambiaataque =
-//                 true; //Si mi ataque en este turno es distinto del que tuve en el primero, ya sabemos que cambia. Si ya ha cambiado no comprobamos más
+          Ataque b = gestorBatalla.jefe2
+              .ataque; //Cogemos el ataque del jefe en este turno, para comprobar que el resto del ejercito tiene el mismo
+          if (!setprimero) {
+            primero2 = gestorBatalla.jefe2
+                .ataque; //Cogemos el ataque que se le pone al ejercito en el primer turno, para comprobar que despues en otros se cambia.
+            setprimero = true;
+          }
+          if (b != primero2 && !cambiaataque)
+            cambiaataque =
+                true; //Si mi ataque en este turno es distinto del que tuve en el primero, ya sabemos que cambia. Si ya ha cambiado no comprobamos más
 
-//           for (Militar m in gestorBatalla.getOficiales2()) {
-//             if (m.ataque != b && todosigual)
-//               todosigual =
-//                   false; //si el ataque no es el mismo que el del jefe, no se actualiza bien. Si ya se ha visto q no es igual en algun momento no comprobamos más
-//           }
-//         }
-//         i++;
-//       }
-//       expect(todosigual, true);
-//       expect(cambiaataque, true);
-//     });
+          for (Militar m in gestorBatalla.getOficiales2()) {
+            if (m.ataque != b && todosigual)
+              todosigual =
+                  false; //si el ataque no es el mismo que el del jefe, no se actualiza bien. Si ya se ha visto q no es igual en algun momento no comprobamos más
+          }
+        }
+        i++;
+      }
+      expect(todosigual, true);
+      expect(cambiaataque, true);
+    });
 
-//     test("Cualquier militar recibe el daño de todos los del otro equipo", () {
-//       Gestor gestorBatalla = Gestor();
-//       gestorBatalla.jefe1.agregar(Oficial("ofi1"));
-//       gestorBatalla.jefe2.agregar(Oficial("Ofi2"));
+    test("Cualquier militar recibe el daño de todos los del otro equipo", () {
+      Gestor gestorBatalla = Gestor();
+      gestorBatalla.jefe1.agregar(Oficial("ofi1"));
+      gestorBatalla.jefe2.agregar(Oficial("Ofi2"));
 
-//       gestorBatalla
-//           .equipo1setAtaque(); //Ponemos un ataque al equipo 1 y hacemos ataque al ejercito 2
-//       gestorBatalla.equipo1ataca();
+      gestorBatalla
+          .equipo1setAtaque(); //Ponemos un ataque al equipo 1 y hacemos ataque al ejercito 2
+      gestorBatalla.equipo1ataca();
 
-//       double danio = gestorBatalla.jefe1.ataque.danio;
-//       bool correcto = true;
+      double danio = gestorBatalla.jefe1.ataque.danio;
+      bool correcto = true;
 
-//       for (Militar m in gestorBatalla.getOficiales2()) {
-//         if (m.vida - 150 - (danio * 2 * 0.8) > 0.0001 && correcto)
-//           correcto = false;
-//         //Comprueba si la vida que le queda es el daño que hace el ataque (x2 pq hay dos oficiales que atacan) en cada uno de los oficiales del otro
-//         //El *0.8 es porque los oficiales reciben solo un 80% del ataque.
-//         //En caso de que ya no sea correcto en cualquiera, ya no lo sigue comprobando
-//         //Tengo el >0.0001 en lugar de igualarlos porque habia algún caso que comparaba 148.39999999999998 y 148.4, dando error.
-//       }
+      for (Militar m in gestorBatalla.getOficiales2()) {
+        if (m.vida - 150 - (danio * 2 * 0.8) > 0.0001 && correcto)
+          correcto = false;
+        //Comprueba si la vida que le queda es el daño que hace el ataque (x2 pq hay dos oficiales que atacan) en cada uno de los oficiales del otro
+        //El *0.8 es porque los oficiales reciben solo un 80% del ataque.
+        //En caso de que ya no sea correcto en cualquiera, ya no lo sigue comprobando
+        //Tengo el >0.0001 en lugar de igualarlos porque habia algún caso que comparaba 148.39999999999998 y 148.4, dando error.
+      }
 
-//       expect(correcto, true);
-//     });
+      expect(correcto, true);
+    });
 
-//     test("CantidadVivos y terminar correctos", () {
-//       Gestor gestorBatalla = Gestor();
-//       gestorBatalla.jefe1.agregar(Oficial("ofi1"));
-//       gestorBatalla.jefe2.agregar(Raso("raso1"));
+    test("CantidadVivos y terminar correctos", () {
+      Gestor gestorBatalla = Gestor();
+      gestorBatalla.jefe1.agregar(Oficial("ofi1"));
+      gestorBatalla.jefe2.agregar(Raso("raso1"));
 
-//       expect(gestorBatalla.partidaFinalizada(), false);
+      expect(gestorBatalla.partidaFinalizada(), false);
 
-//       //Por defecto tienen un AtaqueMaritimo que hace 2 de daño, 4 de daño entre los 2 al raso y 3.6 al oficial
-//       //Para quitar 100 de vida al raso 2 habria que hacer 25 ataques del ejercito 1, para quitar los 150 de vida al jefe habría que hacer 47 ataques.
-//       for (int i = 0; i < 24; i++) {
-//         gestorBatalla.equipo1ataca();
-//       }
-//       gestorBatalla.equipo2vivos();
-//       expect(gestorBatalla.e2vivos,
-//           2); //Haciendo 49 ataques deben quedar los dos vivos y que no termina aun la partida
-//       expect(gestorBatalla.partidaFinalizada(), false);
+      //Por defecto tienen un AtaqueMaritimo que hace 2 de daño, 4 de daño entre los 2 al raso y 3.6 al oficial
+      //Para quitar 100 de vida al raso 2 habria que hacer 25 ataques del ejercito 1, para quitar los 150 de vida al jefe habría que hacer 47 ataques.
+      for (int i = 0; i < 24; i++) {
+        gestorBatalla.equipo1ataca();
+      }
+      gestorBatalla.equipo2vivos();
+      expect(gestorBatalla.e2vivos,
+          2); //Haciendo 49 ataques deben quedar los dos vivos y que no termina aun la partida
+      expect(gestorBatalla.partidaFinalizada(), false);
 
-//       gestorBatalla.equipo1ataca();
-//       gestorBatalla.equipo2vivos();
-//       expect(gestorBatalla.e2vivos,
-//           1); //Con el ataque 50 deberia marcar que queda 1 solo y que no termina aun la partida
-//       expect(gestorBatalla.partidaFinalizada(), false);
+      gestorBatalla.equipo1ataca();
+      gestorBatalla.equipo2vivos();
+      expect(gestorBatalla.e2vivos,
+          1); //Con el ataque 50 deberia marcar que queda 1 solo y que no termina aun la partida
+      expect(gestorBatalla.partidaFinalizada(), false);
 
-//       for (int i = 25; i < 46; i++) {
-//         gestorBatalla.equipo1ataca();
-//       }
-//       gestorBatalla.equipo2vivos();
-//       expect(gestorBatalla.e2vivos,
-//           1); //Haciendo 93 ataques debe quedar el jefe vivo y que no termina aun la partida
-//       expect(gestorBatalla.partidaFinalizada(), false);
+      for (int i = 25; i < 46; i++) {
+        gestorBatalla.equipo1ataca();
+      }
+      gestorBatalla.equipo2vivos();
+      expect(gestorBatalla.e2vivos,
+          1); //Haciendo 93 ataques debe quedar el jefe vivo y que no termina aun la partida
+      expect(gestorBatalla.partidaFinalizada(), false);
 
-//       gestorBatalla.equipo1ataca();
-//       gestorBatalla.equipo2vivos();
-//       expect(gestorBatalla.e2vivos,
-//           0); //Con el ataque 94 deberia marcar que no queda ninguno y que termina la partida
-//       expect(gestorBatalla.partidaFinalizada(), true);
-//       expect(gestorBatalla.ganador(), 1);
-//     });
+      gestorBatalla.equipo1ataca();
+      gestorBatalla.equipo2vivos();
+      expect(gestorBatalla.e2vivos,
+          0); //Con el ataque 94 deberia marcar que no queda ninguno y que termina la partida
+      expect(gestorBatalla.partidaFinalizada(), true);
+      expect(gestorBatalla.ganador(), 1);
+    });
 
-//     test('Comprobar qué se guardan datos en el registro', () {
-//       Gestor gestor = Gestor();
-//       gestor.equipo1vivos();
-//       gestor.equipo2vivos();
+    test('Comprobar qué se guardan datos en el registro', () {
+      Gestor gestor = Gestor();
+      gestor.equipo1vivos();
+      gestor.equipo2vivos();
 
-//       gestor.equipo1ataca();
-//       gestor.equipo2ataca();
+      gestor.equipo1ataca();
+      gestor.equipo2ataca();
 
-//       final registro = gestor.registro;
-//       expect(registro.contains("-----El equipo 1 ha hecho un"), true);
-//       expect(registro.contains(">>>>>El equipo 2 ha hecho un"), true);
-//     });
-//   });
+      final registro = gestor.registro;
+      expect(registro.contains("-----El equipo 1 ha hecho un"), true);
+      expect(registro.contains(">>>>>El equipo 2 ha hecho un"), true);
+    });
+  });
 
 //   /////////// TESTS DEL GRUPO DE CLASES DE LA VISTA ///////////
 /*   group("GRUPO TESTS DE LA VISTA", () {
